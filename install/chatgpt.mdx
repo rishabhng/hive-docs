@@ -1,0 +1,33 @@
+---
+title: "ChatGPT"
+description: "Add Hive to ChatGPT as a custom app."
+---
+
+<Note>
+  Custom apps are available on eligible Business, Enterprise, and Edu workspaces. Personal
+  ChatGPT accounts cannot add custom MCP servers today.
+</Note>
+
+## Create the app
+
+1. Open **Settings > Apps** and create a new app in developer mode.
+2. Give it the endpoint:
+
+   ```
+   https://mcp.hiveintelligence.xyz/mcp
+   ```
+
+3. Choose **OAuth** for authentication.
+4. Scan tools from the server.
+5. Complete authorization in the browser.
+
+## Verify
+
+Start a new chat, enable the Hive app, and ask for a live price. ChatGPT shows the tool call
+before it answers.
+
+## Backend use instead
+
+If you are calling the OpenAI Responses API from your own backend rather than using the
+ChatGPT interface, point the API at Hive's endpoint with a bearer key instead of OAuth. See
+[authentication](/authentication).

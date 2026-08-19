@@ -1,0 +1,30 @@
+---
+title: "Windsurf"
+description: "Add Hive to Windsurf through mcp_config.json."
+---
+
+## Add the server
+
+Edit `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "hive": {
+      "serverUrl": "https://mcp.hiveintelligence.xyz/mcp"
+    }
+  }
+}
+```
+
+<Note>
+  Windsurf uses `serverUrl` for remote MCP servers, not `url` like Cursor. Using the wrong
+  key is the most common reason the server fails to load here.
+</Note>
+
+Windsurf opens browser authorization when the server first connects.
+
+## Verify
+
+Restart Windsurf and ask a question that needs live data. If nothing happens, check the MCP
+panel for a load error on the `hive` entry.

@@ -1,0 +1,50 @@
+---
+title: "Live catalog"
+description: "Check which tools are deployed right now, rather than trusting a number in the docs."
+---
+
+Documentation goes stale. The deployed catalog does not.
+
+## From your agent
+
+Ask it to list what it can reach:
+
+> List the Hive tool categories available to you, and how many tools are in each.
+
+Your agent reads this from the live server, so the answer reflects what is actually deployed
+rather than what was true when these docs were written.
+
+## From the CLI
+
+```bash
+hive list
+```
+
+Narrow it to a task:
+
+```bash
+hive search "funding rates"
+```
+
+Then inspect one before calling it:
+
+```bash
+hive info get_funding_rates
+```
+
+## Why counts here can differ
+
+The numbers in [tools](/tools) describe the current release. A provider outage, a paused
+integration, or a deploy in progress can all mean a tool is temporarily unavailable even
+though it is documented.
+
+That is what `runtime_status` on every response is for. A provider that is degraded says so
+in the receipt rather than returning a confident wrong answer. See
+[receipts](/concepts/receipts).
+
+## Checking service health
+
+[status.hiveintelligence.xyz](https://www.hiveintelligence.xyz/status) reports transport
+reachability, OAuth lifecycle, provider probes, task canaries, workflow routing, MCP protocol
+behavior, and catalog integrity as separate signals, each with its own evidence and
+observation time.

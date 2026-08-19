@@ -1,0 +1,52 @@
+---
+title: "Data sources"
+description: "The 13 providers behind Hive, and what each one contributes."
+---
+
+Hive normalizes 13 upstream providers behind one interface. Your agent asks a question; Hive
+decides which source answers it and tells you which one it used.
+
+## The providers
+
+| Provider | Contributes |
+|---|---|
+| [Alchemy](https://www.alchemy.com) | EVM wallet, token, NFT, transfer, simulation, gas, and network RPC data |
+| [CoinGecko](https://www.coingecko.com) | Market data, OHLC, trending coins, exchange data, news |
+| [DeFiLlama](https://defillama.com) | TVL, yields, fees, stablecoins, chain analytics |
+| [GoPlus](https://gopluslabs.io) | Token, NFT, dApp, wallet security and risk analysis |
+| [Codex](https://www.codex.io) | DEX analytics, prediction markets, on-chain trade flow |
+| [CCXT](https://github.com/ccxt/ccxt) | Centralized exchange spot, derivatives, funding rates |
+| [Helius](https://www.helius.dev) | Solana RPC, Digital Asset Standard, priority fees, parsed transactions |
+| [Hyperliquid](https://hyperliquid.xyz) | Perpetual DEX volume, funding, candles, open-interest caps, and builder DEX discovery |
+| [Open Data Fetch](https://www.hiveintelligence.xyz) | Allowlisted, size-capped access to long-tail public crypto APIs when no typed tool covers the source |
+| [Tenderly](https://tenderly.co) | EVM transaction simulation, gas estimation, calldata decoding |
+| [Moralis](https://moralis.com) | Wallet, token, NFT analytics across EVM and Solana |
+| [Hive Archive](https://mcp.hiveintelligence.xyz) | Cross-venue crypto derivatives history since November 2023 across 33 CEX and DEX venues: settled funding rates, open interest, basis, long/short ratio, and liquidations from Hive's own archive store |
+| [RWA Perps](https://mcp.hiveintelligence.xyz) | Cross-venue tokenized real-world-asset perp funding and markets (Hyperliquid HIP-3 builder dexes, Ostium, Avantis, Lighter, Extended) with mechanism-true normalization fields |
+
+## How routing works
+
+You do not choose a provider. Ask for a price and Hive decides whether that means CoinGecko,
+Codex, or CCXT based on the asset, the venue, and which sources are healthy right now.
+
+The `provider` field in every receipt tells you which one answered, so the same question can
+legitimately cite different sources on different days.
+
+## Managed keys
+
+Hive holds the upstream credentials. You do not sign up with CoinGecko or Alchemy separately,
+and you do not manage their rate limits. One Hive credential covers everything in the table
+above.
+
+## Only official endpoints
+
+Every provider above is accessed through its documented, official API. Hive does not scrape
+sites or use reverse-engineered private endpoints, which means coverage is narrower in places
+than it could be, and considerably more stable.
+
+## What Hive deliberately does not cover
+
+Hive serves raw datapoints, not opinions, and skips anything your model can already search
+for. There are no news feeds, social sentiment scores, or trend summaries. Those are things
+an LLM with web access handles better, and wrapping them in an API would add a stale layer
+between your agent and the source.

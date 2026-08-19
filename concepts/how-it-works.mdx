@@ -1,0 +1,68 @@
+---
+title: "How Hive works"
+description: "Why your agent finds the right tool without you wiring anything."
+---
+
+Hive exposes 607 callable tools. If a client loaded all of them at once, the tool list alone
+would crowd out the conversation. So the root endpoint stays small and routes instead.
+
+## The root endpoint is deliberately small
+
+When your agent connects to `https://mcp.hiveintelligence.xyz/mcp`, it sees eight tools: five
+workflow primitives and three hero tools for the most common questions.
+
+The three hero tools answer directly:
+
+| Tool | Question it answers |
+|---|---|
+| `get_token_price` | What is this asset worth right now? |
+| `check_token_safety` | Is this contract risky? |
+| `get_wallet_portfolio` | What does this address hold? |
+
+Everything else is reached through discovery.
+
+## Discovery, schema, execution
+
+For anything beyond the hero tools, agents follow three steps:
+
+<Steps>
+  <Step title="Find the right tool">
+    `search_tools` takes a plain description of the task and returns the tools that match,
+    scoped to the relevant category.
+  </Step>
+  <Step title="Read its schema">
+    `get_api_endpoint_schema` returns the exact parameters, types, and defaults, so the agent
+    builds a valid call instead of guessing argument names.
+  </Step>
+  <Step title="Run it">
+    `invoke_api_endpoint` executes the call and returns a bounded, typed response with the
+    receipt attached.
+  </Step>
+</Steps>
+
+Your agent does this on its own. You do not register tools, maintain a manifest, or update
+anything when Hive's catalog changes.
+
+## Why not load everything at once
+
+Two reasons. A 607 tool list eats context that should hold the actual problem, and it makes
+selection harder: the more similar tools an agent sees at once, the more often it picks the
+wrong one. Narrowing by task first produces better calls.
+
+If you want a middle ground, connect to a single category endpoint. Your agent then sees only
+that category's tools, with no discovery step. The trade is flexibility for a shorter list.
+
+## Bounded by default
+
+Responses respect `limit`, `page`, `per_page`, and `offset`, and Hive caps response size
+regardless. A query that would return thousands of rows comes back paginated rather than
+flooding your agent's context.
+
+## Where the data comes from
+
+Hive normalizes 13 upstream providers behind one interface. Your agent asks for a price; Hive
+decides whether that means CoinGecko, Codex, or CCXT, and tells you which one it used.
+
+<Card title="Data sources" icon="database" href="/concepts/data-sources">
+  What each provider covers.
+</Card>

@@ -1,0 +1,58 @@
+---
+title: "Receipts"
+description: "Every material answer says where it came from, when it was fetched, and whether the source was healthy."
+---
+
+An agent that reports a number without a source is asking you to trust it. Hive attaches
+provenance to every material response so the number can be checked.
+
+## The three fields
+
+<ResponseField name="provider" type="string">
+  The upstream source that served this data, for example `coingecko`, `goplus`, or `ccxt`.
+  When Hive routes the same question to different providers on different days, the receipt
+  changes with it.
+</ResponseField>
+
+<ResponseField name="fetched_at" type="ISO 8601 timestamp">
+  When the data was retrieved from that provider. Compare it against your own clock to decide
+  whether a figure is fresh enough to act on.
+</ResponseField>
+
+<ResponseField name="runtime_status" type="string">
+  Whether the provider was healthy for this call. A degraded or partially available provider
+  says so rather than returning a number that looks authoritative.
+</ResponseField>
+
+## Why this matters in practice
+
+An agent doing token diligence might pull a price, a liquidity figure, and a contract risk
+score from three different providers within a few seconds of each other. Without receipts,
+the summary reads as one confident answer. With them, you can see that the price is four
+seconds old, the liquidity figure is two minutes old, and the risk score came back while its
+provider was degraded.
+
+That last case is the one worth designing for. Hive would rather tell you a source was
+struggling than quietly serve you a stale number.
+
+## Normalization is a field, never a filter
+
+When Hive knows something is off about a datapoint, it says so in the response instead of
+dropping the row. You will see fields like:
+
+| Field | Meaning |
+|---|---|
+| `is_delisted` | The asset is no longer actively traded on the venue |
+| `is_price_suspect` | The price diverges enough from other sources to be worth a second look |
+| `funding_mechanism` | How this venue calculates funding, since venues differ |
+
+Your agent decides what to do with a suspect price. Hive does not decide for you by hiding it.
+
+## Reading receipts in your agent
+
+Ask for them explicitly and models will surface them:
+
+> Get the price of SOL and tell me which provider it came from and how old it is.
+
+For workflows where provenance matters every time, the [agent skills](/skills) build receipt
+citation into the prompt so you do not have to ask.

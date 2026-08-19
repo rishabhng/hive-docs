@@ -1,0 +1,33 @@
+---
+title: "VS Code"
+description: "Add Hive to VS Code through .vscode/mcp.json."
+---
+
+Requires VS Code 1.102 or newer.
+
+## Add the server
+
+Create `.vscode/mcp.json` in your project root:
+
+```json
+{
+  "servers": {
+    "hive": {
+      "type": "http",
+      "url": "https://mcp.hiveintelligence.xyz/mcp"
+    }
+  }
+}
+```
+
+<Note>
+  VS Code uses `servers`, not `mcpServers`, and needs the explicit `"type": "http"`.
+</Note>
+
+VS Code opens browser authorization on first use and stores the credential outside this
+file, so `.vscode/mcp.json` is safe to commit.
+
+## Verify
+
+Reload the window, open Copilot Chat in agent mode, and ask for something live. Hive's tools
+appear in the tool picker once discovery completes.

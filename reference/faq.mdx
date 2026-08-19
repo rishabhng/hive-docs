@@ -1,0 +1,71 @@
+---
+title: "FAQ"
+description: "Common questions about connecting to and building on Hive."
+---
+
+<AccordionGroup>
+  <Accordion title="Do I need an account to try Hive?">
+    No. The anonymous lane covers 25 material calls per IP per day, resetting at 00:00 UTC.
+    Add the endpoint and start asking. Discovery calls do not count against it.
+  </Accordion>
+
+  <Accordion title="Which clients work?">
+    Nine have their own guide: Claude Code, Claude Desktop, Cursor, Windsurf, VS Code,
+    ChatGPT, Grok, Codex CLI, and Gemini CLI. Any client that speaks MCP over Streamable HTTP
+    works, whether or not it is listed. See [install](/install).
+  </Accordion>
+
+  <Accordion title="Where does the data come from?">
+    13 providers including CoinGecko, Alchemy, DeFiLlama, GoPlus, Codex, CCXT, Helius, and
+    Hyperliquid. Every response names which one answered. See
+    [data sources](/concepts/data-sources).
+  </Accordion>
+
+  <Accordion title="Do I need my own provider API keys?">
+    No. Hive holds the upstream credentials and manages their rate limits. One Hive
+    credential covers every provider.
+  </Accordion>
+
+  <Accordion title="Why does my agent only see eight tools?">
+    That is intended. The root endpoint stays compact and routes to the rest through
+    discovery, because a 607 tool list would crowd out the conversation and make selection
+    worse. See [how it works](/concepts/how-it-works).
+  </Accordion>
+
+  <Accordion title="What happens when I run out of credits?">
+    Requests stop with a quota error. Hive does not bill overage, so a runaway agent produces
+    errors rather than an invoice.
+  </Accordion>
+
+  <Accordion title="Can Hive place trades?">
+    No. Hive is read-only market data. It does not execute trades, hold funds, or give
+    financial advice.
+  </Accordion>
+
+  <Accordion title="Is my API key visible in my client config?">
+    Not with OAuth, which is what every supported interactive client uses. You add only the
+    URL and the client stores its own credential. Keys are for headless environments that
+    cannot open a browser.
+  </Accordion>
+
+  <Accordion title="I lost my API key. Can I retrieve it?">
+    No. The full secret is shown once at creation; Hive stores only a hash and a short
+    non-secret prefix. Disable the old key and create a new one.
+  </Accordion>
+
+  <Accordion title="Why is a price flagged as suspect?">
+    Sources disagreed beyond a threshold. Rather than silently picking one, Hive sets
+    `is_price_suspect` so your agent can surface the disagreement.
+  </Accordion>
+
+  <Accordion title="How do I know if data is stale?">
+    Every material response carries `fetched_at`. Compare it against your own clock. Provider
+    health for that call is in `runtime_status`.
+  </Accordion>
+
+  <Accordion title="Does Hive cover news or sentiment?">
+    No, deliberately. Your model searches the web better than an API wrapper would. Hive
+    covers what a model cannot get otherwise: live market state, on-chain data, and contract
+    risk.
+  </Accordion>
+</AccordionGroup>

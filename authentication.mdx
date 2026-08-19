@@ -1,0 +1,79 @@
+---
+title: "Authentication"
+description: "Three ways to authenticate with Hive: the anonymous lane, browser OAuth, and API keys for headless agents."
+---
+
+Hive has three access lanes. Which one you use depends on whether a human is present when
+the agent connects.
+
+## The anonymous lane
+
+Add the endpoint and start asking. No account, no key.
+
+You get 25 material calls per IP each day, resetting at 00:00 UTC. Discovery calls do not
+count, so your agent can list tools and read schemas freely while it works out what to call.
+
+This lane exists so you can evaluate Hive properly before signing up. It is not meant for
+production traffic, and it is capped per IP rather than per user.
+
+## OAuth for interactive clients
+
+Clients like Claude, Cursor, VS Code, and ChatGPT authorize in the browser. You add only
+the URL. When the client first connects, it opens a browser window, you approve the
+connection, and the client stores the credential itself.
+
+<Note>
+  No secret goes in your config file with OAuth. If a setup guide tells you to paste a key
+  into `mcp.json`, you are looking at the headless path by mistake.
+</Note>
+
+You can review and revoke connected clients any time from
+[dashboard settings](https://www.hiveintelligence.xyz/dashboard/settings). Disconnecting
+revokes every access and refresh token issued to that client.
+
+## API keys for headless agents
+
+Cron jobs, backends, and CI have no browser, so they use a key instead:
+
+```
+Authorization: Bearer YOUR_HIVE_API_KEY
+```
+
+Create one at [dashboard keys](https://www.hiveintelligence.xyz/dashboard/keys). A few
+things worth knowing before you do:
+
+- The full secret appears once, at creation. Hive stores a hash and a short non-secret
+  prefix afterwards, so there is no way to retrieve it later. Put it in your secret manager
+  immediately.
+- Credits are tracked on your account, not per key. Creating a second key does not give you
+  a second allowance.
+- Disabling a key stops it authenticating within about a minute. Disabled keys stay listed
+  for audit history and stop counting toward your active key limit.
+
+<Warning>
+  Never commit a Hive key or paste it into a client config that syncs to a repository. Use
+  an environment variable or your platform's secret storage.
+</Warning>
+
+## Which lane applies
+
+| Situation | Lane |
+|---|---|
+| Trying Hive out | Anonymous |
+| Claude, Cursor, VS Code, ChatGPT, Windsurf, Grok | OAuth |
+| Codex CLI, Gemini CLI | OAuth |
+| Backend service, cron, CI | API key |
+| Hive CLI on your machine | API key, set up by `hive init` |
+
+## When a call is rejected
+
+A rejected call tells you which lane failed and what to do next. The common cases:
+
+- **Anonymous cap reached.** You have used your 25 material calls for the day. Sign in, or
+  wait for the 00:00 UTC reset.
+- **Missing credential on a protected surface.** The agent tried something the anonymous
+  lane does not cover. Connect via OAuth or add a key.
+- **Credits exhausted.** Your plan's monthly allowance is spent. Hive stops rather than
+  billing overage, so requests fail with a clear quota error until the cycle resets.
+
+See [limits](/concepts/limits) for how credits and rate limits actually work.

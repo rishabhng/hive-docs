@@ -1,0 +1,60 @@
+---
+title: "Errors"
+description: "What Hive's errors mean and what to do about each one."
+---
+
+Hive writes errors for the model, not just the log. Each one names what went wrong and what
+to do next, so an agent can recover without a human reading a stack trace.
+
+## Authentication
+
+| Error | Cause | Fix |
+|---|---|---|
+| Missing credential | A protected surface was called with no auth | Connect via OAuth, or send a bearer key |
+| Invalid key | The key is wrong, disabled, or revoked | Check it in the dashboard; create a new one if disabled |
+| Expired session | An OAuth credential lapsed | Reconnect the client |
+
+<Note>
+  Sending a key that is present but wrong returns a 200 with an error envelope rather than a
+  401. This is deliberate and regression-tested: some MCP clients treat a 401 as a transport
+  failure and drop the connection instead of surfacing the message.
+</Note>
+
+## Quota and rate
+
+| Error | Cause | Fix |
+|---|---|---|
+| Anonymous cap reached | 25 material calls used for this IP today | Sign in, or wait for 00:00 UTC |
+| Credits exhausted | Monthly allowance spent | Upgrade, or wait for the cycle to reset |
+| Rate limited | Too many requests this minute | Back off and retry; do not retry immediately |
+
+Credits and rate limits are independent. You can hit a per minute limit while well inside
+your monthly credits.
+
+## Tools and arguments
+
+| Error | Cause | Fix |
+|---|---|---|
+| Unknown tool | The name does not exist in the deployed catalog | Run `search_tools` again; the catalog may have changed |
+| Invalid arguments | Wrong shape, type, or a missing required field | Call `get_api_endpoint_schema` and rebuild the call |
+| Unsupported chain | The tool does not cover that chain | Check the category page for coverage |
+
+Most argument errors come from an agent guessing parameter names. Reading the schema first
+avoids nearly all of them.
+
+## Provider and runtime
+
+| Error | Cause | Fix |
+|---|---|---|
+| Provider unavailable | The upstream source is down or not configured | Retry later; check `runtime_status` |
+| Provider degraded | The source answered but is unhealthy | Treat the result as low confidence, re-run if it matters |
+| Upstream timeout | The provider did not respond in time | Retry once, then fall back |
+
+A provider being unavailable is not the same as a datapoint being absent. Hive distinguishes
+the two so your agent does not report "no data" when the truth is "could not check".
+
+## Handling errors in an agent
+
+Give your agent one rule: when a call fails, read the message and act on it rather than
+retrying the same call. Hive's errors say which of the above happened, and the right response
+differs completely between a rate limit and an invalid argument.

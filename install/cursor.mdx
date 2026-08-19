@@ -1,0 +1,34 @@
+---
+title: "Cursor"
+description: "Add Hive to Cursor through mcp.json."
+---
+
+## Add the server
+
+Open **Settings > MCP Servers > Add Server**, or edit `~/.cursor/mcp.json` directly:
+
+```json
+{
+  "mcpServers": {
+    "hive": {
+      "url": "https://mcp.hiveintelligence.xyz/mcp"
+    }
+  }
+}
+```
+
+Cursor discovers OAuth from the URL and opens a browser when it first connects. No secret
+belongs in this file.
+
+## Verify
+
+Restart Cursor, then ask in chat:
+
+> Use Hive to check whether 0x6B175474E89094C44Da98b954EedeAC495271d0F is safe.
+
+You should see Cursor call a Hive tool before answering.
+
+## If tools do not appear
+
+Cursor reads `mcp.json` at startup. Quit and reopen it after editing. If the server shows
+but has no tools, open the MCP panel and refresh it so Cursor re-runs discovery.

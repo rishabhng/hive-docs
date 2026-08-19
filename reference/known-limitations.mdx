@@ -1,0 +1,51 @@
+---
+title: "Known limitations"
+description: "What Hive does not do, and where coverage is thinner than you might expect."
+---
+
+Worth knowing before you build on it.
+
+## Official endpoints only
+
+Every provider is accessed through its documented public API. Hive does not scrape sites or
+use reverse-engineered private endpoints.
+
+That makes coverage narrower in places than competitors who do scrape, and considerably more
+stable. A scraped source breaks without warning when the site changes; a documented API
+deprecates on a schedule.
+
+## No LLM-searchable data
+
+Hive deliberately does not serve news, social sentiment, trend scores, or web summaries. Your
+model already searches the web better than an API wrapper would, and putting a stale caching
+layer between your agent and a news source makes the answer worse.
+
+Hive covers what a model cannot get any other way: live market state, on-chain data, and
+contract risk.
+
+## Raw datapoints, not opinions
+
+There are no buy signals, price predictions, or risk verdicts. Hive returns the inputs and
+your agent forms the judgment. Where a datapoint is questionable, that shows up as a field
+like `is_price_suspect` rather than the row being filtered out.
+
+## Coverage varies by chain
+
+EVM chains and Solana have the deepest coverage. Other chains vary by provider and by data
+type. A tool existing does not guarantee it covers your chain; ask, or check the category page.
+
+## Portfolio values are estimates
+
+A portfolio total is assembled from per-asset prices fetched at slightly different moments.
+Thin tokens may be marked at prices you could not actually realize. Treat totals as
+indicative.
+
+## Anonymous lane is for evaluation
+
+25 material calls per IP per day is enough to judge whether Hive fits. It is not a production
+tier, and it is capped per IP, so shared networks share the allowance.
+
+## Docs counts can lag deployment
+
+Tool counts in these docs describe the current release. The deployed catalog is the
+authority, and [live catalog](/tools/live-catalog) shows what is actually there.

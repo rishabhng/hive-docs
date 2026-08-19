@@ -1,0 +1,54 @@
+---
+title: "Agent skills"
+description: "Installable workflow packs that teach an agent to run a whole investigation, start to finish."
+---
+
+A tool call answers one question. A skill teaches your agent how to run an investigation:
+which tools to reach for, in what order, what to check along the way, and how to report the
+result with its sources attached.
+
+Hive publishes 17 skill packs. They work in Claude Code, Cursor, Windsurf, and any other
+agent that reads the skills format.
+
+## Install
+
+Everything at once:
+
+```bash
+npx skills add hive-intel/hive-skills
+```
+
+Or a single pack:
+
+```bash
+npx skills add hive-intel/hive-skills --skill hive-token-diligence --yes
+```
+
+See what is available before installing:
+
+```bash
+npx skills add hive-intel/hive-skills --list
+```
+
+The packs live at
+[github.com/hive-intel/hive-skills](https://github.com/hive-intel/hive-skills).
+
+## What a skill changes
+
+Without a skill, asking an agent to vet a token gets you whatever it thinks to check. With
+`hive-token-diligence` installed, it follows a route: resolve the canonical asset first, pull
+market context and liquidity, check holder concentration, run contract risk, then give a
+verdict with a receipt behind each claim.
+
+The difference shows up most on questions where the naive answer is confidently wrong. An
+agent that checks one price source will tell you a delisted token is worth something. An
+agent following the diligence route sees `is_delisted` and says so.
+
+## Skills and MCP together
+
+Skills do not replace the MCP connection. They sit on top of it: the skill decides what to
+call, and Hive's endpoint serves the call. Install both.
+
+<Card title="Browse the packs" icon="list" href="/skills/packs">
+  All 17, grouped by what they do.
+</Card>

@@ -1,53 +1,122 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Hive Intelligence",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#C54C1A",
+    "light": "#F9A47E",
+    "dark": "#D14E1E"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
-    "pages": [
+    "groups": [
       {
-        "group": "Getting Started",
+        "group": "Get started",
         "pages": [
           "index",
-          "quickstart"
+          "quickstart",
+          "authentication"
+        ]
+      },
+      {
+        "group": "Install",
+        "pages": [
+          "install/index",
+          "install/claude-code",
+          "install/claude-desktop",
+          "install/cursor",
+          "install/windsurf",
+          "install/vs-code",
+          "install/chatgpt",
+          "install/grok",
+          "install/codex",
+          "install/gemini-cli",
+          "install/generic"
+        ]
+      },
+      {
+        "group": "Concepts",
+        "pages": [
+          "concepts/how-it-works",
+          "concepts/receipts",
+          "concepts/limits",
+          "concepts/data-sources"
+        ]
+      },
+      {
+        "group": "CLI",
+        "pages": [
+          "cli/index",
+          "cli/commands"
+        ]
+      },
+      {
+        "group": "Agent skills",
+        "pages": [
+          "skills/index",
+          "skills/packs"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/index",
+          "guides/token-security",
+          "guides/market-intelligence",
+          "guides/wallet-analysis",
+          "guides/defi-yield",
+          "guides/trading-bot"
+        ]
+      },
+      {
+        "group": "Tools",
+        "pages": [
+          "tools/index",
+          "tools/market-data",
+          "tools/dex-analytics",
+          "tools/portfolio",
+          "tools/token-contract",
+          "tools/defi",
+          "tools/nft",
+          "tools/security",
+          "tools/network",
+          "tools/search",
+          "tools/prediction-markets",
+          "tools/live-catalog"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "reference/errors",
+          "reference/response-format",
+          "reference/rate-limits",
+          "reference/known-limitations",
+          "reference/faq",
+          "reference/changelog"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Status",
+        "href": "https://www.hiveintelligence.xyz/status"
+      },
+      {
+        "label": "Pricing",
+        "href": "https://www.hiveintelligence.xyz/pricing"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "href": "https://www.hiveintelligence.xyz/dashboard"
     }
   },
   "contextual": {
@@ -64,9 +133,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/Hive_Intel",
+      "github": "https://github.com/hive-intel/hive-sdk",
+      "telegram": "https://t.me/HiveIntelligence"
     }
   }
 }

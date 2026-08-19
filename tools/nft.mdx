@@ -1,0 +1,37 @@
+---
+title: "NFT Analytics"
+description: "Collections, floors, sales, holders, traits, compressed NFTs. 67 tools on a dedicated Hive endpoint."
+---
+
+Collections, floors, sales, holders, traits, compressed NFTs.
+
+## Endpoint
+
+Connect here to expose only this category to your agent:
+
+```
+https://mcp.hiveintelligence.xyz/hive_nft_analytics/mcp
+```
+
+67 tools live behind it. The root endpoint reaches the same tools through
+[discovery](/concepts/how-it-works), so use this narrower endpoint when an agent works only
+in this domain.
+
+## Finding a specific tool
+
+Rather than listing every tool here, ask Hive:
+
+```
+search_tools("<what you are trying to do>")
+```
+
+The catalog changes as providers add coverage, so discovery gives you the current answer
+where a static list would go stale. [The live catalog](/tools/live-catalog) shows exactly what
+is deployed.
+
+## From the CLI
+
+```bash
+hive search "<what you are trying to do>"
+hive info <tool_name>
+```

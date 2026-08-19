@@ -1,0 +1,51 @@
+---
+title: "Skill packs"
+description: "All 17 Hive agent skill packs, grouped by purpose."
+---
+
+Install any of these with:
+
+```bash
+npx skills add hive-intel/hive-skills --skill <name> --yes
+```
+
+## Setup and integration
+
+| Pack | What it does |
+|---|---|
+| `hive-mcp` | Connect Hive's MCP endpoint to any supported client, including OAuth sign-in, headless key fallback, and debugging missing tools or 401s |
+| `hive-build-onboarding` | Walk through browser auth, dashboard key creation, and headless environment setup |
+| `hive-build` | Use Hive from application code, through MCP clients or the published TypeScript adapter |
+| `hive-cli` | Run Hive from shell scripts, cron jobs, and terminal research |
+
+## Routing and discovery
+
+| Pack | What it does |
+|---|---|
+| `hive-query` | Start from the user's intent, pick the right task toolset, inspect schemas, and call exactly what is needed |
+| `hive-tool-discovery` | Task discovery, schema lookup, read-only invocation, and result verification |
+| `hive-stateful-monitoring` | Create, list, update, and archive durable monitors that agents can schedule against |
+
+## Research workflows
+
+| Pack | What it does |
+|---|---|
+| `hive-market-research` | Prices, liquidity, exchanges, OHLC, order books, and derivatives context |
+| `hive-token-diligence` | Token metadata, market context, liquidity, holders, enrichment, and risk |
+| `hive-wallet-investigation` | Wallet balances, transfers, NFTs, PnL, DeFi positions, and notable activity |
+| `hive-security-risk` | Token, approval, address, phishing, contract, and simulation risk signals |
+| `hive-dex-pool-analysis` | On-chain pools, pairs, liquidity, trades, OHLCV, and DEX flow |
+| `hive-defi-research` | Protocols, TVL, fees, revenue, stablecoins, bridges, and yield pools |
+| `hive-nft-research` | Collections, ownership, metadata, floor price, sales, rarity, and spam checks |
+| `hive-solana-analysis` | Solana wallets, SPL token accounts, DAS assets, parsed transactions, and priority fees |
+| `hive-network-infrastructure` | Chain state, gas, blocks, receipts, logs, transaction status, and RPC diagnostics |
+| `hive-prediction-markets` | Prediction markets, events, outcomes, market stats, traders, holders, and trades |
+
+## Picking one
+
+If you are unsure, install `hive-query`. It routes a plain question to the right toolset,
+which covers most of what the specialised packs do without you choosing upfront.
+
+Install a specialised pack when your agent does the same kind of investigation repeatedly and
+you want the full route every time. `hive-token-diligence` and `hive-wallet-investigation` are
+the two that earn their place fastest.

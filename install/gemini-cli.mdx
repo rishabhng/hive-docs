@@ -1,0 +1,30 @@
+---
+title: "Gemini CLI"
+description: "Add Hive to Gemini CLI through settings.json."
+---
+
+## Add the server
+
+Edit `~/.gemini/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "hive": {
+      "httpUrl": "https://mcp.hiveintelligence.xyz/mcp"
+    }
+  }
+}
+```
+
+<Note>
+  Gemini CLI uses `httpUrl` for remote MCP servers. Using `url` or `serverUrl` here will not
+  work.
+</Note>
+
+Complete OAuth in the browser when the server first connects.
+
+## Verify
+
+Restart the CLI and ask for a live price. If the server does not load, check the JSON parses
+and that you used `httpUrl`.

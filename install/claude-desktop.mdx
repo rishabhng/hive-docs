@@ -1,0 +1,33 @@
+---
+title: "Claude Desktop"
+description: "Connect Hive to Claude Desktop through Settings, Connectors."
+---
+
+## Add the connector
+
+1. Open Claude Desktop and go to **Settings > Connectors**.
+2. Choose to add a custom connector.
+3. Paste the endpoint:
+
+   ```
+   https://mcp.hiveintelligence.xyz/mcp
+   ```
+
+4. Approve the connection when Claude opens your browser.
+
+Claude Desktop stores the credential itself. Nothing goes in a config file by hand.
+
+## Verify
+
+Start a new conversation and ask:
+
+> What is the current price of Bitcoin? Use Hive.
+
+If Claude answers with a provider name and a timestamp, the connector is live. If it answers
+from memory with no source, the server did not load. Quit Claude Desktop fully and reopen it,
+then check **Settings > Connectors** again.
+
+## Refreshing the tool list
+
+Claude caches the tool list per connection. After Hive ships new tools, disconnect and
+reconnect the connector, or restart Claude Desktop, to pick them up.

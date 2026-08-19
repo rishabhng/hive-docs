@@ -1,0 +1,27 @@
+---
+title: "Codex CLI"
+description: "Add Hive to Codex CLI with mcp add and login."
+---
+
+## Add and authorize
+
+```bash
+codex mcp add hive --url https://mcp.hiveintelligence.xyz/mcp
+codex mcp login hive
+```
+
+The login step opens a browser. Approve the connection there and Codex stores the
+credential.
+
+## Verify
+
+```bash
+codex mcp list
+```
+
+`hive` should appear as connected. Then start a session and ask for live data.
+
+<Note>
+  `codex mcp login` needs an interactive terminal. In CI, use an API key instead. See
+  [authentication](/authentication).
+</Note>

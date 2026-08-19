@@ -1,0 +1,56 @@
+---
+title: "Trading bot"
+description: "Feed live, sourced market state into an automated strategy."
+---
+
+<Warning>
+  Hive serves data. It does not place trades, hold funds, or give financial advice. Execution,
+  risk limits, and every trading decision remain entirely yours.
+</Warning>
+
+## The shape
+
+A bot using Hive typically runs on a schedule rather than conversationally:
+
+<Steps>
+  <Step title="Authenticate headlessly">
+    No browser in a cron job, so use an API key from your secret manager. See
+    [authentication](/authentication).
+  </Step>
+  <Step title="Pull the state your strategy needs">
+    Prices, funding, open interest, liquidity. Keep the set small; every call costs credits
+    and time.
+  </Step>
+  <Step title="Check the receipts before acting">
+    This is the step people skip. Reject data that is too old or came back with a degraded
+    `runtime_status`, rather than trading on it.
+  </Step>
+  <Step title="Decide and execute elsewhere">
+    Your venue integration handles the order. Hive is not in that path.
+  </Step>
+</Steps>
+
+## Use the CLI for the plumbing
+
+```bash
+hive call get_token_price --args '{"symbol":"BTC"}' --json | jq '.data.price'
+```
+
+`--json` gives stable output for scripts, and exit codes are consistent enough to gate on.
+
+## Staying inside limits
+
+Rate limits are per minute and credits are per month, and a bot can exhaust either. Practical
+habits:
+
+- Poll on the interval your strategy actually needs, not the fastest one available.
+- Batch what can be batched rather than looping single lookups.
+- Handle the quota error properly. Hive hard stops rather than billing overage, so a bot that
+  ignores the error simply trades on nothing.
+
+## The failure mode worth designing for
+
+Data can be stale or degraded without being wrong-looking. A bot that acts on any number it
+receives will eventually act on a price fetched during a provider outage. Gate on `fetched_at`
+and `runtime_status` explicitly, and treat a failed check as a reason to skip the cycle rather
+than to guess.

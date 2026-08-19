@@ -1,0 +1,53 @@
+---
+title: "Token security"
+description: "Check whether a token contract is safe to interact with before you touch it."
+---
+
+The failure mode this prevents: an agent looks up a token's price, finds a number, and
+reports that it is worth something. The contract turns out to be a honeypot you can buy but
+never sell.
+
+## Ask
+
+> Check whether the token at 0x6B175474E89094C44Da98b954EedeAC495271d0F on Ethereum is safe
+> to interact with. Show the risk signals and cite your sources.
+
+With `hive-token-diligence` installed, that is the whole prompt. Without it, ask your agent
+to resolve the token first, then run a security scan, then check holder concentration.
+
+## What gets checked
+
+<Steps>
+  <Step title="Resolve the asset">
+    Confirm the address maps to the token you think it does. Symbol collisions are common and
+    an agent that skips this step will happily analyze the wrong contract.
+  </Step>
+  <Step title="Contract risk">
+    Honeypot behavior, mint authority, ownership renouncement, transfer restrictions, and
+    proxy upgradeability. GoPlus provides most of these signals.
+  </Step>
+  <Step title="Liquidity">
+    Depth, which pools hold it, and whether liquidity is locked. A clean contract with two
+    thousand dollars of liquidity is still untradeable at size.
+  </Step>
+  <Step title="Holder concentration">
+    If a handful of wallets hold most of the supply, a clean scan does not mean much.
+  </Step>
+</Steps>
+
+## Reading the answer
+
+Three things decide whether the result is usable:
+
+- **Which provider ran the scan**, since coverage differs by chain. A risk score for a chain
+  the provider barely indexes is weak evidence.
+- **How old the data is.** Contract ownership can change. A scan from an hour ago is not a
+  statement about now.
+- **Whether `runtime_status` was healthy.** A degraded security provider is the one case
+  where you should re-run rather than trust the answer.
+
+## What a clean result does not tell you
+
+A contract that passes every automated check can still be a rug. These signals catch
+mechanical traps, not intent. Treat a clean scan as the absence of known red flags, not proof
+of safety, and size positions accordingly.

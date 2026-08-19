@@ -1,0 +1,50 @@
+---
+title: "Response format"
+description: "The shape of a Hive response and which fields matter."
+---
+
+Responses are typed and bounded. Material responses carry provenance.
+
+## Shape
+
+```json
+{
+  "ok": true,
+  "data": { },
+  "receipt": {
+    "provider": "coingecko",
+    "fetched_at": "2026-08-19T14:22:07Z",
+    "runtime_status": "healthy"
+  }
+}
+```
+
+`data` differs per tool. `receipt` is consistent, and it is the part worth reading every
+time. See [receipts](/concepts/receipts).
+
+## Normalization fields
+
+Where Hive knows something is off about a datapoint, it says so in a field rather than
+dropping the row:
+
+| Field | Meaning |
+|---|---|
+| `is_delisted` | No longer actively traded on the venue |
+| `is_price_suspect` | Diverges enough from other sources to warrant a check |
+| `funding_mechanism` | How this venue calculates funding, since venues differ |
+
+Your agent decides what to do with a flagged row. Hive does not filter it out for you.
+
+## Bounded output
+
+Every list-returning tool respects `limit`, `page`, `per_page`, and `offset`, and Hive caps
+total response size regardless of what you ask for. A query that would return thousands of
+rows comes back paginated.
+
+This is deliberate. An unbounded response burns the context your agent needs for the actual
+task.
+
+## Errors
+
+Failures use the same envelope with `ok: false` and an error object naming the cause and the
+next action. See [errors](/reference/errors).

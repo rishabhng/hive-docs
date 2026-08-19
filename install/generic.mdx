@@ -1,0 +1,53 @@
+---
+title: "Compatible MCP clients"
+description: "Connect any MCP client that speaks Streamable HTTP."
+---
+
+Hive implements the Model Context Protocol over Streamable HTTP. Any compliant client can
+connect, whether or not it has a guide here.
+
+## What to give your client
+
+| Setting | Value |
+|---|---|
+| Endpoint | `https://mcp.hiveintelligence.xyz/mcp` |
+| Transport | Streamable HTTP |
+| Authorization | OAuth 2.1 from the URL, or a bearer key |
+
+Most clients want a JSON block shaped roughly like this:
+
+```json
+{
+  "mcpServers": {
+    "hive": {
+      "url": "https://mcp.hiveintelligence.xyz/mcp"
+    }
+  }
+}
+```
+
+The key names vary by client. Windsurf wants `serverUrl`, VS Code wants `servers` with
+`"type": "http"`, and Gemini CLI wants `httpUrl`. Check your client's own MCP docs for which
+it expects.
+
+## Headless clients
+
+If your client cannot open a browser, authenticate with a key instead:
+
+```
+Authorization: Bearer YOUR_HIVE_API_KEY
+```
+
+Create a key at [dashboard keys](https://www.hiveintelligence.xyz/dashboard/keys) and read
+it from an environment variable rather than committing it.
+
+## Category endpoints
+
+The root endpoint returns a compact set of tools and routes your agent to the rest. If you
+want a narrower surface, connect to one category endpoint instead, for example:
+
+```
+https://mcp.hiveintelligence.xyz/hive_market_data/mcp
+```
+
+Every category and its endpoint is listed in [tools](/tools).

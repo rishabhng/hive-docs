@@ -1,0 +1,42 @@
+---
+title: "Market intelligence"
+description: "Build a full picture of an asset: spot, liquidity, derivatives, and where it trades."
+---
+
+A price on its own is thin. What you usually want is whether that price is real: how deep the
+book is, where it trades, and what the derivatives market thinks.
+
+## Ask
+
+> Give me a full market picture for SOL: spot price, where it trades, order book depth, and
+> current funding rates across venues. Cite each source.
+
+## What to pull
+
+| Question | Where it comes from |
+|---|---|
+| What is it worth? | Spot price across aggregated sources |
+| Is that price trustworthy? | Cross-venue comparison, `is_price_suspect` |
+| Can I trade size? | Order book depth and pool liquidity |
+| What do derivatives say? | Funding rates, open interest, basis |
+| Where does volume actually sit? | Exchange-level volume breakdown |
+
+## Funding rates across venues
+
+Hive aggregates funding across 33 CEX and DEX venues, with history back to November 2023.
+That matters because a single venue's funding rate tells you about that venue, not the market.
+
+Venues also calculate funding differently. Hive surfaces `funding_mechanism` on the response
+so a comparison is honest rather than averaging incompatible numbers.
+
+## Watch for
+
+**Stale prices on thin assets.** A token that has not traded in hours still returns its last
+price. `fetched_at` tells you how old that is.
+
+**Delisted assets.** `is_delisted` marks assets no longer actively traded. Without checking
+it, an agent reports a price for something you cannot buy.
+
+**Suspect prices.** When sources disagree beyond a threshold, `is_price_suspect` flags it
+rather than silently picking one. Ask your agent to surface the disagreement instead of
+resolving it for you.

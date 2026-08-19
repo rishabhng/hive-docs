@@ -1,0 +1,37 @@
+---
+title: "DeFi yield"
+description: "Compare pools on more than the headline APY."
+---
+
+Headline APY is the least reliable number in DeFi. It is usually annualized from a short
+window, often includes incentive emissions that are about to end, and says nothing about
+whether you can exit.
+
+## Ask
+
+> Find USDC yield opportunities above 5% APY. For each, show TVL, what the yield is actually
+> composed of, and how long the pool has existed.
+
+## What to compare
+
+| Signal | Why it matters |
+|---|---|
+| TVL | A pool with very low TVL can be drained or exited before you can react |
+| Base vs reward APY | Base yield persists; emissions stop |
+| Pool age | New pools have no track record and higher contract risk |
+| Protocol TVL trend | A protocol losing TVL fast is a different risk than a stable one |
+| Chain | Where the pool lives changes both bridging cost and risk |
+
+Hive splits base and reward APY where the source provides it, which is the single most useful
+distinction when a headline number looks too good.
+
+## Then check the contract
+
+A yield opportunity is also a contract you are about to approve. Run the
+[token security](/guides/token-security) checks on the pool token and the protocol before
+committing, and look at outstanding approvals afterward.
+
+## What this cannot tell you
+
+Impermanent loss is not in the APY. For volatile pairs, a high APY can still lose against
+simply holding. Hive gives you the inputs; the model is yours.

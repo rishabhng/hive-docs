@@ -1,0 +1,45 @@
+---
+title: "Rate limits"
+description: "Per minute limits by plan, and how they interact with credits."
+---
+
+Two separate ceilings apply: how fast you can call, and how much you can call in a month.
+
+## Per minute
+
+| Plan | Rate limit |
+|---|---|
+| Free | 30 requests/min |
+| Pro | 500 requests/min |
+| Enterprise | Custom |
+
+Exceeding it returns a rate limit error with headers telling you when to retry. Back off
+rather than retrying immediately, or you will simply consume the next window too.
+
+## Per month
+
+Credits are separate and tracked on your account rather than per key:
+
+| Plan | Monthly credits |
+|---|---|
+| Free | 10,000 |
+| Pro | 500,000 |
+| Enterprise | Custom |
+
+Creating more keys does not create more allowance.
+
+## When you hit either
+
+Hive stops. There is no overage billing, so an agent stuck in a loop produces errors rather
+than an invoice. Requests fail with a quota error naming the cause and the reset time.
+
+Current balance and cycle end are on
+[dashboard usage](https://www.hiveintelligence.xyz/dashboard/usage).
+
+## Staying inside them
+
+- Use `limit` and `page` instead of pulling result sets you will not read.
+- Cache within a task rather than re-fetching the same value per step.
+- Connect to a [category endpoint](/tools) when an agent only works in one domain, so
+  discovery stays cheap.
+- Poll on the interval your strategy needs, not the fastest one available.

@@ -1,0 +1,76 @@
+---
+title: "CLI commands"
+description: "Reference for every Hive CLI command."
+---
+
+Run `hive --help` for the current list on your installed version, or `hive <command> --help`
+for a single command.
+
+Most commands accept `--json` for machine-readable output, which is what you want in scripts.
+
+## Setup
+
+| Command | What it does |
+|---|---|
+| `hive init` | Interactive setup: authenticate, then configure clients |
+| `hive init --all --browser` | Same, but configures every detected client and opens the browser |
+| `hive setup [client]` | Write config for one client, for example `hive setup cursor` |
+| `hive doctor` | Diagnose credentials, connectivity, and detected clients |
+
+`setup` has per-client shortcuts too: `hive claude-code`, `hive claude-desktop`, `hive cursor`,
+`hive codex`, and `hive grok`.
+
+## Authentication
+
+| Command | What it does |
+|---|---|
+| `hive auth login` | Browser sign-in, stores a key locally |
+| `hive auth logout` | Clear stored credentials |
+| `hive auth info` | Show which credential is active and its plan |
+| `hive auth refresh` | Refresh an expiring credential |
+
+## Keys
+
+| Command | What it does |
+|---|---|
+| `hive keys list` | List keys on your account |
+| `hive keys create` | Create a key. The secret prints once |
+| `hive keys revoke <id>` | Disable a key |
+
+## Running tools
+
+| Command | What it does |
+|---|---|
+| `hive search <query>` | Find tools matching a task description |
+| `hive info <name>` | Show a tool's schema and parameters |
+| `hive call <name> --args '<json>'` | Execute a tool |
+| `hive list` | List available tools |
+| `hive http [url]` | Raw request against an endpoint |
+
+## Configuration
+
+| Command | What it does |
+|---|---|
+| `hive config` | Show current configuration |
+| `hive profiles` | Manage named profiles for multiple accounts |
+| `hive alias set <name> <command>` | Save a shorthand for a call you run often |
+| `hive completion <shell>` | Generate shell completions |
+
+## Running a local server
+
+| Command | What it does |
+|---|---|
+| `hive serve` | Run Hive as a local stdio MCP server |
+
+`serve` is for clients that only speak stdio, or for local development against your own
+provider keys. Most users should connect to the hosted endpoint instead.
+
+## Scripting
+
+`--json` on any command gives you output to pipe:
+
+```bash
+hive call get_token_price --args '{"symbol":"ETH"}' --json | jq '.data.price'
+```
+
+Exit codes are stable, so `hive doctor` works as a health check in CI.

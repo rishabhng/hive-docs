@@ -1,0 +1,53 @@
+---
+title: "Limits and credits"
+description: "How the anonymous lane, credits, and rate limits work, and what happens when you hit them."
+---
+
+Hive stops rather than billing you for overage. Plans are fixed subscriptions with a hard
+cap, so a runaway agent produces an error, not an invoice.
+
+## The anonymous lane
+
+Without an account you get 25 material calls per IP per day, resetting at 00:00 UTC.
+
+Discovery calls do not count. Your agent can list tools and read schemas as often as it needs
+while working out what to call. Only calls that fetch real data draw down the allowance.
+
+## Credits
+
+Signed-in accounts draw from a monthly credit wallet instead. Credits are tracked on your
+account, not per key, so creating extra keys does not create extra allowance.
+
+| Plan | Monthly credits | Rate limit | Active keys |
+|---|---|---|---|
+| Free | 10,000 | 30/min | 5 |
+| Pro | 500,000 | 500/min | 10 |
+| Enterprise | Custom | Custom | Custom |
+
+Current pricing lives at
+[hiveintelligence.xyz/pricing](https://www.hiveintelligence.xyz/pricing).
+
+## What happens at the cap
+
+Requests fail with a quota error that names the cause and the reset time. Nothing is billed
+beyond your subscription, and no request silently degrades to worse data.
+
+Your credits reset at the start of each billing cycle. You can see the current balance and
+cycle end on [dashboard usage](https://www.hiveintelligence.xyz/dashboard/usage).
+
+## Rate limits
+
+Rate limits are per minute and per plan. Exceeding one returns a rate limit error with
+headers telling you when to retry. Agents should back off rather than retrying immediately.
+
+Rate limits and credits are separate: you can be well inside your monthly credits and still
+hit a per minute limit during a burst.
+
+## Designing agents around this
+
+A few habits that keep agents inside the caps:
+
+- Use `limit` and `page` rather than pulling full result sets you will not read.
+- Cache results your workflow reuses within a single task, instead of re-fetching per step.
+- Prefer a category endpoint when a workflow only touches one domain, so discovery calls stay
+  cheap and focused.

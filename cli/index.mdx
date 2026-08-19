@@ -1,0 +1,66 @@
+---
+title: "Hive CLI"
+description: "Run the Hive catalog from your terminal for scripts, cron jobs, and setup checks."
+---
+
+The CLI reaches the same tools your agent does. It is useful when you want data in a shell
+script, when you need to confirm credentials work, or when you are setting up a client and
+want the config generated for you.
+
+## Install
+
+```bash
+npx -y -p hive-intelligence@latest hive init --all --browser
+```
+
+That one command installs the CLI, walks you through authentication in the browser, and
+detects which AI clients you have so it can write their config for you.
+
+Requires Node 22.12 or newer. The package is
+[`hive-intelligence`](https://www.npmjs.com/package/hive-intelligence) on npm, currently
+version 1.3.0.
+
+To install it permanently instead of running through `npx`:
+
+```bash
+npm install -g hive-intelligence
+```
+
+## Authenticate
+
+```bash
+hive auth login
+```
+
+This opens a browser, you approve, and the CLI stores a key locally. Check it worked:
+
+```bash
+hive auth info
+```
+
+For CI, set `HIVE_API_KEY` in the environment instead of running an interactive login.
+
+## Your first call
+
+```bash
+hive call get_token_price --args '{"symbol":"BTC"}'
+```
+
+Or search for the right tool first:
+
+```bash
+hive search "funding rates"
+```
+
+## Check your setup
+
+```bash
+hive doctor
+```
+
+`doctor` reports which credentials it found, whether the endpoint is reachable, and which
+clients it can see on your machine. Run it first whenever something is not working.
+
+<Card title="Command reference" icon="terminal" href="/cli/commands">
+  Every command and what it does.
+</Card>

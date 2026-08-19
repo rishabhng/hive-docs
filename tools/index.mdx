@@ -1,0 +1,57 @@
+---
+title: "Tools"
+description: "Ten categories covering 607 callable tools, and how your agent finds the right one."
+---
+
+Hive exposes 589 provider tools across ten categories, plus 18 Hive-native tools for durable
+monitoring, memory, alerts, and reports. That is 607 callable tools in total.
+
+You will not wire any of them up by hand.
+
+## How your agent finds a tool
+
+The root endpoint shows eight tools, not 607. Your agent narrows from there:
+
+```
+search_tools("check if this token is a honeypot")
+  -> get_api_endpoint_schema(tool_name)
+  -> invoke_api_endpoint(tool_name, args)
+```
+
+[How Hive works](/concepts/how-it-works) covers why the root list stays small.
+
+## The categories
+
+| Category | Tools | Covers |
+|---|---|---|
+| [Market Data & Price](/tools/market-data) | 143 | Spot, OHLC, market caps, volume, derivatives, exchanges |
+| [On-Chain DEX & Pool Analytics](/tools/dex-analytics) | 66 | Pool, pair, liquidity, and trade flow data across major EVM and Solana markets |
+| [Portfolio & Wallet](/tools/portfolio) | 104 | Wallet balances, history, PnL, approvals across EVM and Solana |
+| [Token & Contract Data](/tools/token-contract) | 48 | Token metadata, holders, top traders, analytics |
+| [DeFi Protocol Analytics](/tools/defi) | 25 | TVL, yields, fees, chain breakdowns, stablecoins |
+| [NFT Analytics](/tools/nft) | 67 | Collections, floors, sales, holders, traits, compressed NFTs |
+| [Security & Risk Analysis](/tools/security) | 51 | Token, NFT, dApp, wallet scans; honeypot, rug-pull, simulation, LP locks |
+| [Network & Infrastructure](/tools/network) | 40 | Network lists, gas, block numbers, exchange status, and Solana infrastructure |
+| [Search & Discovery](/tools/search) | 24 | Cross-provider search across coins, tokens, exchanges, categories, events |
+| [Prediction Markets](/tools/prediction-markets) | 21 | Polymarket events, traders, market prices, settlement history |
+
+## Narrowing to one category
+
+Each category has its own endpoint. Connect to it directly and your agent sees only that
+category's tools, with no discovery step:
+
+```
+https://mcp.hiveintelligence.xyz/hive_market_data/mcp
+```
+
+This is worth doing when an agent only ever works in one domain. A wallet-analysis agent does
+not need prediction market tools competing for its attention.
+
+## The live catalog is the authority
+
+Tool counts here describe the current release. What is actually deployed can differ, and the
+live catalog always wins.
+
+<Card title="Query the live catalog" icon="database" href="/tools/live-catalog">
+  Check what is deployed right now.
+</Card>

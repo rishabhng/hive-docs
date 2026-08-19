@@ -1,0 +1,59 @@
+---
+title: "Install Hive"
+description: "Connect Hive's MCP endpoint to Claude, Cursor, VS Code, ChatGPT, and five other clients."
+---
+
+Every client connects to the same endpoint:
+
+```
+https://mcp.hiveintelligence.xyz/mcp
+```
+
+What differs is where the config lives and what the file looks like. Pick your client.
+
+## Clients with browser authorization
+
+These handle OAuth themselves. You add the URL, they open a browser on first connect, and
+they store the credential outside your config file. No secret in `mcp.json`.
+
+<CardGroup cols={2}>
+  <Card title="Claude Code" icon="terminal" href="/install/claude-code">
+    One command in your terminal.
+  </Card>
+  <Card title="Claude Desktop" icon="desktop" href="/install/claude-desktop">
+    Settings, Connectors, paste the URL.
+  </Card>
+  <Card title="Cursor" icon="code" href="/install/cursor">
+    `~/.cursor/mcp.json`
+  </Card>
+  <Card title="Windsurf" icon="wind" href="/install/windsurf">
+    `~/.codeium/windsurf/mcp_config.json`
+  </Card>
+  <Card title="VS Code" icon="code-branch" href="/install/vs-code">
+    `.vscode/mcp.json`, version 1.102 or newer.
+  </Card>
+  <Card title="ChatGPT" icon="comment" href="/install/chatgpt">
+    Business and Enterprise workspaces.
+  </Card>
+  <Card title="Grok" icon="bolt" href="/install/grok">
+    Connectors on grok.com.
+  </Card>
+  <Card title="Codex CLI" icon="terminal" href="/install/codex">
+    `codex mcp add`, then log in.
+  </Card>
+  <Card title="Gemini CLI" icon="gem" href="/install/gemini-cli">
+    `~/.gemini/settings.json`
+  </Card>
+</CardGroup>
+
+## Anything else
+
+If your client speaks MCP over Streamable HTTP, it will work. See
+[compatible MCP clients](/install/generic) for the shape most clients expect and what to do
+when yours needs a key instead of OAuth.
+
+## After you connect
+
+Start a fresh session so the client re-reads its server list, then ask a question that needs
+live data. [Quickstart](/quickstart) has a couple that make it obvious whether the connection
+is working.

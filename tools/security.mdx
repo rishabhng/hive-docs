@@ -1,0 +1,37 @@
+---
+title: "Security & Risk Analysis"
+description: "Token, NFT, dApp, wallet scans; honeypot, rug-pull, simulation, LP locks. 51 tools on a dedicated Hive endpoint."
+---
+
+Token, NFT, dApp, wallet scans; honeypot, rug-pull, simulation, LP locks.
+
+## Endpoint
+
+Connect here to expose only this category to your agent:
+
+```
+https://mcp.hiveintelligence.xyz/hive_security_risk/mcp
+```
+
+51 tools live behind it. The root endpoint reaches the same tools through
+[discovery](/concepts/how-it-works), so use this narrower endpoint when an agent works only
+in this domain.
+
+## Finding a specific tool
+
+Rather than listing every tool here, ask Hive:
+
+```
+search_tools("<what you are trying to do>")
+```
+
+The catalog changes as providers add coverage, so discovery gives you the current answer
+where a static list would go stale. [The live catalog](/tools/live-catalog) shows exactly what
+is deployed.
+
+## From the CLI
+
+```bash
+hive search "<what you are trying to do>"
+hive info <tool_name>
+```

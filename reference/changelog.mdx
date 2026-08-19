@@ -1,0 +1,33 @@
+---
+title: "Changelog"
+description: "Notable changes to the Hive MCP server, CLI, and skills."
+---
+
+<Update label="August 2026" description="MCP, CLI, and skills only">
+  Hive is now an agent-focused product. The REST API remains as internal plumbing for the
+  CLI and dashboard, but it is no longer a documented product surface, and the SDK guides
+  have been retired.
+
+  Documentation moved here from the main site.
+</Update>
+
+<Update label="August 2026" description="Hive Archive provider">
+  Added cross-venue derivatives history covering 33 CEX and DEX venues going back to
+  November 2023: settled funding rates, open interest, basis, long/short ratio, and
+  liquidations.
+</Update>
+
+<Update label="August 2026" description="CLI 1.3.0">
+  Published `hive-intelligence@1.3.0` to npm. `hive init --all --browser` now detects
+  installed clients and writes their config for you.
+</Update>
+
+<Update label="July 2026" description="Anonymous lane">
+  Added 25 material calls per IP per day with no account, so Hive can be evaluated before
+  signup. Discovery calls do not count against the cap.
+</Update>
+
+<Update label="July 2026" description="Compact root endpoint">
+  The root endpoint now exposes eight tools rather than the full catalog: five workflow
+  primitives plus three hero tools. Everything else is reached through discovery.
+</Update>

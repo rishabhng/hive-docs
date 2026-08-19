@@ -1,0 +1,49 @@
+---
+title: "Claude Code"
+description: "Add Hive to Claude Code with one command."
+---
+
+## Add the server
+
+```bash
+claude mcp add --transport http hive https://mcp.hiveintelligence.xyz/mcp
+```
+
+That is the whole setup. Claude Code stores the server in your config and opens browser
+authorization the first time it connects.
+
+## Verify
+
+```bash
+claude mcp list
+```
+
+You should see `hive` listed and connected. If it says it needs authentication, run:
+
+```bash
+claude mcp login hive
+```
+
+<Note>
+  `claude mcp login` needs an interactive terminal because it prompts you to paste back a
+  redirect URL. It will not complete inside a non-interactive session or a CI job.
+</Note>
+
+## Ask something
+
+Start a fresh Claude Code session, then:
+
+> What is Ethereum trading at? Use Hive.
+
+The answer should name a provider and a fetch time.
+
+## Headless use
+
+For CI or a script where no browser is available, skip OAuth and use a key:
+
+```bash
+claude mcp add --transport http hive https://mcp.hiveintelligence.xyz/mcp \
+  --header "Authorization: Bearer $HIVE_API_KEY"
+```
+
+Keep the key in an environment variable. See [authentication](/authentication).

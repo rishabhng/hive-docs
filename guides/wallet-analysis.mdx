@@ -1,0 +1,51 @@
+---
+title: "Wallet analysis"
+description: "Work out what an address holds and what it has been doing, across chains."
+---
+
+## Ask
+
+> Analyze 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045. What does it hold across chains, what
+> has it been doing recently, and are there any risky approvals outstanding?
+
+## What a full picture includes
+
+<Steps>
+  <Step title="Balances">
+    Native and token balances per chain. An address is rarely on one chain, and a
+    single-chain answer will understate holdings.
+  </Step>
+  <Step title="NFTs">
+    Collections held, with floor prices where they exist. Floors are indicative, not
+    liquidatable value.
+  </Step>
+  <Step title="DeFi positions">
+    Supplied, borrowed, staked, and LP positions. These often hold more value than the raw
+    token balance suggests.
+  </Step>
+  <Step title="Recent activity">
+    Transfers and swaps, which is where behavior shows up: accumulation, distribution, or a
+    wallet quietly exiting.
+  </Step>
+  <Step title="Approvals">
+    Outstanding token approvals, which is the security half. An old unlimited approval to a
+    since-compromised contract is a live risk regardless of what the wallet holds.
+  </Step>
+</Steps>
+
+## Solana
+
+Solana has its own account model, so ask specifically for SPL token accounts and Digital
+Asset Standard assets. `hive-solana-analysis` handles parsed transactions and priority fees
+in a way generic EVM tooling will not.
+
+## Interpreting the result
+
+**Portfolio value is an estimate.** It is composed from per-asset prices at slightly
+different fetch times, and thin tokens can be marked at prices you could not realize.
+
+**Absence is not proof.** If a chain is not covered for an asset type, the answer is
+incomplete rather than zero. Ask which chains were actually checked.
+
+**Labels are not identity.** An address associated with an entity in one dataset is not
+confirmation that entity controls it today.
