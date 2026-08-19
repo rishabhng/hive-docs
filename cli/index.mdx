@@ -20,12 +20,6 @@ Requires Node 22.12 or newer. The package is
 [`hive-intelligence`](https://www.npmjs.com/package/hive-intelligence) on npm, currently
 version 1.3.0.
 
-To install it permanently instead of running through `npx`:
-
-```bash
-npm install -g hive-intelligence
-```
-
 ## Authenticate
 
 ```bash
@@ -35,7 +29,7 @@ hive auth login
 This opens a browser, you approve, and the CLI stores a key locally. Check it worked:
 
 ```bash
-hive auth info
+hive auth whoami
 ```
 
 For CI, set `HIVE_API_KEY` in the environment instead of running an interactive login.
@@ -43,13 +37,13 @@ For CI, set `HIVE_API_KEY` in the environment instead of running an interactive 
 ## Your first call
 
 ```bash
-hive call get_token_price --args '{"symbol":"BTC"}'
+hive tools call get_token_price --args '{"token":"BTC"}'
 ```
 
 Or search for the right tool first:
 
 ```bash
-hive search "funding rates"
+hive tools search "funding rates"
 ```
 
 ## Check your setup
@@ -58,8 +52,8 @@ hive search "funding rates"
 hive doctor
 ```
 
-`doctor` reports which credentials it found, whether the endpoint is reachable, and which
-clients it can see on your machine. Run it first whenever something is not working.
+`doctor` checks your API key, the endpoint, server health, the tool catalog, and whether a
+CLI update is available. Run it first whenever something is not working.
 
 <Card title="Command reference" icon="terminal" href="/cli/commands">
   Every command and what it does.

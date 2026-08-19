@@ -17,19 +17,19 @@ rather than what was true when these docs were written.
 ## From the CLI
 
 ```bash
-hive list
+hive tools list
 ```
 
 Narrow it to a task:
 
 ```bash
-hive search "funding rates"
+hive tools search "funding rates"
 ```
 
 Then inspect one before calling it:
 
 ```bash
-hive info get_funding_rates
+hive tools info get_funding_rates
 ```
 
 ## Why counts here can differ
@@ -44,7 +44,7 @@ in the receipt rather than returning a confident wrong answer. See
 
 ## Checking service health
 
-[status.hiveintelligence.xyz](https://www.hiveintelligence.xyz/status) reports transport
+[The status page](https://www.hiveintelligence.xyz/status) reports transport
 reachability, OAuth lifecycle, provider probes, task canaries, workflow routing, MCP protocol
 behavior, and catalog integrity as separate signals, each with its own evidence and
 observation time.

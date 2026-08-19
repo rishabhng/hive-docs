@@ -33,10 +33,18 @@ A bot using Hive typically runs on a schedule rather than conversationally:
 ## Use the CLI for the plumbing
 
 ```bash
-hive call get_token_price --args '{"symbol":"BTC"}' --json | jq '.data.price'
+hive tools call get_token_price --args '{"token":"BTC"}' --json
 ```
 
-`--json` gives stable output for scripts, and exit codes are consistent enough to gate on.
+`--json` prints an envelope with `ok`, `data`, and `meta`, where `meta` carries the provider
+and runtime status. The CLI has a built-in `--jq` filter if you want to pull one field out
+without piping:
+
+```bash
+hive tools call get_token_price --args '{"token":"BTC"}' --jq '.price'
+```
+
+Exit codes are stable enough to gate on.
 
 ## Staying inside limits
 

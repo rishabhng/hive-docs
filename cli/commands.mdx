@@ -1,10 +1,10 @@
 ---
 title: "CLI commands"
-description: "Reference for every Hive CLI command."
+description: "Reference for the Hive CLI, verified against the shipped command tree."
 ---
 
-Run `hive --help` for the current list on your installed version, or `hive <command> --help`
-for a single command.
+Commands are grouped under `tools`, `auth`, `config`, and `keys`. Run `hive --help` for the
+list on your installed version, or `hive <group> --help` for one group.
 
 Most commands accept `--json` for machine-readable output, which is what you want in scripts.
 
@@ -12,22 +12,36 @@ Most commands accept `--json` for machine-readable output, which is what you wan
 
 | Command | What it does |
 |---|---|
-| `hive init` | Interactive setup: authenticate, then configure clients |
-| `hive init --all --browser` | Same, but configures every detected client and opens the browser |
-| `hive setup [client]` | Write config for one client, for example `hive setup cursor` |
-| `hive doctor` | Diagnose credentials, connectivity, and detected clients |
+| `hive init` | Interactive per-client MCP setup |
+| `hive init --all --browser` | Configure every detected client, with browser sign-in |
+| `hive setup [client]` | Set up one client, for example `hive setup cursor` |
+| `hive doctor` | Check API key, endpoint reachability, tool catalog, and updates |
+| `hive upgrade` | Update the CLI |
+| `hive uninstall` | Remove Hive configuration |
 
-`setup` has per-client shortcuts too: `hive claude-code`, `hive claude-desktop`, `hive cursor`,
-`hive codex`, and `hive grok`.
+## Tools
+
+Discovery and execution live under `hive tools`:
+
+| Command | What it does |
+|---|---|
+| `hive tools list` | List registered tools. Accepts `--category`, `--provider`, `--limit`, `--offset` |
+| `hive tools search <query>` | Search tools by name or description |
+| `hive tools info <name>` | Show a tool's schema and description |
+| `hive tools call <name> --args '<json>'` | Execute a tool. Arguments can also be piped as JSON on stdin |
 
 ## Authentication
 
 | Command | What it does |
 |---|---|
-| `hive auth login` | Browser sign-in, stores a key locally |
-| `hive auth logout` | Clear stored credentials |
-| `hive auth info` | Show which credential is active and its plan |
-| `hive auth refresh` | Refresh an expiring credential |
+| `hive auth login` | Browser sign-in. `--manual` pastes a key instead |
+| `hive auth logout` | Remove stored credentials |
+| `hive auth whoami` | Show the current profile |
+| `hive auth signup` | Create a Hive account and get a key |
+| `hive auth profiles` | List profiles |
+| `hive auth switch <name>` | Switch the active profile |
+
+Every auth command takes `--profile <name>` if you keep more than one account.
 
 ## Keys
 
@@ -37,40 +51,51 @@ Most commands accept `--json` for machine-readable output, which is what you wan
 | `hive keys create` | Create a key. The secret prints once |
 | `hive keys revoke <id>` | Disable a key |
 
-## Running tools
+## Client configuration
+
+`hive config` prints config for a client rather than writing it, which is useful when you
+want to paste it yourself or check what `setup` would do:
 
 | Command | What it does |
 |---|---|
-| `hive search <query>` | Find tools matching a task description |
-| `hive info <name>` | Show a tool's schema and parameters |
-| `hive call <name> --args '<json>'` | Execute a tool |
-| `hive list` | List available tools |
-| `hive http [url]` | Raw request against an endpoint |
+| `hive config claude-desktop` | Print Claude Desktop config JSON |
+| `hive config claude-code` | Print Claude Code config |
+| `hive config cursor` | Print Cursor config JSON |
+| `hive config vscode` | Print VS Code config JSON |
+| `hive config codex` | Print Codex config |
+| `hive config grok` | Print Grok config |
+| `hive config http [url]` | Print remote HTTP connection instructions |
 
-## Configuration
-
-| Command | What it does |
-|---|---|
-| `hive config` | Show current configuration |
-| `hive profiles` | Manage named profiles for multiple accounts |
-| `hive alias set <name> <command>` | Save a shorthand for a call you run often |
-| `hive completion <shell>` | Generate shell completions |
-
-## Running a local server
+## Other
 
 | Command | What it does |
 |---|---|
 | `hive serve` | Run Hive as a local stdio MCP server |
+| `hive alias set <name> <command>` | Save a shorthand for a call you run often |
+| `hive completion <shell>` | Generate shell completions |
 
 `serve` is for clients that only speak stdio, or for local development against your own
 provider keys. Most users should connect to the hosted endpoint instead.
 
 ## Scripting
 
-`--json` on any command gives you output to pipe:
+`--json` gives output you can pipe:
 
 ```bash
-hive call get_token_price --args '{"symbol":"ETH"}' --json | jq '.data.price'
+hive tools call get_token_price --args '{"token":"ETH"}' --json
 ```
+
+The envelope has `ok`, `data`, and `meta`, where `meta` carries the tool name, provider, and
+runtime status.
+
+Useful global flags:
+
+| Flag | What it does |
+|---|---|
+| `--json` | Machine-readable envelope |
+| `--jq <filter>` | Filter `data` without piping to an external tool |
+| `--fields <list>` | Keep only the named fields |
+| `--csv` | CSV output when `data` is an array |
+| `--quiet` | Suppress the human-readable status line |
 
 Exit codes are stable, so `hive doctor` works as a health check in CI.

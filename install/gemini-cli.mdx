@@ -18,8 +18,9 @@ Edit `~/.gemini/settings.json`:
 ```
 
 <Note>
-  Gemini CLI uses `httpUrl` for remote MCP servers. Using `url` or `serverUrl` here will not
-  work.
+  Gemini CLI uses `httpUrl` for a streamable HTTP server like Hive. It also accepts `url`,
+  but that selects its SSE transport, which is not what you want here. `serverUrl` is a
+  Windsurf key and will not work.
 </Note>
 
 Complete OAuth in the browser when the server first connects.

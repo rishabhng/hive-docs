@@ -1,26 +1,77 @@
 ---
 title: "Response format"
-description: "The shape of a Hive response and which fields matter."
+description: "Where Hive attaches provenance, and how the shape differs between hero tools and category tools."
 ---
 
-Responses are typed and bounded. Material responses carry provenance.
+Responses are typed and bounded, and material ones carry provenance. Where that provenance
+sits depends on which surface answered.
 
-## Shape
+## MCP tools
+
+Tools reached through discovery attach a top-level `_hive` object alongside the payload:
 
 ```json
 {
-  "ok": true,
-  "data": { },
-  "receipt": {
+  "_hive": {
+    "receipt_id": "9f2c…",
     "provider": "coingecko",
+    "tool": "get_coin_price",
+    "runtime_status": "ok",
     "fetched_at": "2026-08-19T14:22:07Z",
-    "runtime_status": "healthy"
+    "cache_status": "miss",
+    "duration_ms": 184
   }
 }
 ```
 
-`data` differs per tool. `receipt` is consistent, and it is the part worth reading every
-time. See [receipts](/concepts/receipts).
+`_hive` also carries `receipt_version`, `server_version`, `input_digest`, and
+`result_digest`. The digests are SHA-256 self-checks over the canonical arguments and the
+normalized payload. They let you detect accidental mutation; they are not server signatures.
+
+## Hero tools
+
+The three hero tools return a `source_receipt` instead:
+
+```json
+{
+  "source_receipt": {
+    "provider": "coingecko",
+    "tool": "get_coin_price",
+    "runtime_status": "ok",
+    "fetched_at": "2026-08-19T14:22:07Z",
+    "cache_status": "hit",
+    "source": "…",
+    "receipt_id": "9f2c…"
+  }
+}
+```
+
+Same three fields you care about, different container. See [receipts](/concepts/receipts).
+
+## runtime_status values
+
+`runtime_status` is an enum, not free text:
+
+| Value | Meaning |
+|---|---|
+| `ok` | The call succeeded against a healthy provider |
+| `invalid_input` | Your arguments failed validation, or the venue and method combination is unsupported. Fixable by correcting the call |
+| `missing_key` | The provider is not configured |
+| `plan_required` | Your plan does not include this |
+| `rate_limited` | Throttled |
+| `degraded` | The provider answered but is unhealthy. Treat the result as low confidence |
+| `failing` | The provider is down |
+
+`invalid_input` is worth handling separately: it is not an outage, so retrying unchanged will
+fail the same way.
+
+## Cache fields
+
+`cache_status` tells you whether the response came from Hive's cache. On a hit, `observed_at`
+is when Hive first saw the data and `cache_age_ms` is how long ago that was.
+
+A `cache_age_ms` of zero means Hive fetched from the provider just now. It does not promise
+that the provider's own underlying datum is current.
 
 ## Normalization fields
 
@@ -38,13 +89,10 @@ Your agent decides what to do with a flagged row. Hive does not filter it out fo
 ## Bounded output
 
 Every list-returning tool respects `limit`, `page`, `per_page`, and `offset`, and Hive caps
-total response size regardless of what you ask for. A query that would return thousands of
-rows comes back paginated.
-
-This is deliberate. An unbounded response burns the context your agent needs for the actual
-task.
+total response size regardless of what you ask for. An unbounded response would burn the
+context your agent needs for the actual task.
 
 ## Errors
 
-Failures use the same envelope with `ok: false` and an error object naming the cause and the
-next action. See [errors](/reference/errors).
+Failures return an error object naming the cause and the next action. See
+[errors](/reference/errors).

@@ -18,8 +18,8 @@ Edit `~/.codeium/windsurf/mcp_config.json`:
 ```
 
 <Note>
-  Windsurf uses `serverUrl` for remote MCP servers, not `url` like Cursor. Using the wrong
-  key is the most common reason the server fails to load here.
+  Windsurf accepts both `serverUrl` and `url`. We use `serverUrl` because that is the field
+  name in Codeium's own documentation.
 </Note>
 
 Windsurf opens browser authorization when the server first connects.
