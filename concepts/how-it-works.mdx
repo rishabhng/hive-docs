@@ -28,7 +28,8 @@ For anything beyond the hero tools, agents follow three steps:
 <Steps>
   <Step title="Find the right tool">
     `search_tools` takes a plain description of the task and returns the tools that match,
-    scoped to the relevant category.
+    scoped to the relevant category. It also returns any workflow that fits, which is usually
+    the better thing to follow.
   </Step>
   <Step title="Read its schema">
     `get_api_endpoint_schema` returns the exact parameters, types, and defaults, so the agent
@@ -42,6 +43,21 @@ For anything beyond the hero tools, agents follow three steps:
 
 Your agent does this on its own. You do not register tools, maintain a manifest, or update
 anything when Hive's catalog changes.
+
+## Workflows do the sequencing
+
+Finding a tool is not the same as knowing what to do with it. Hive ships 13 workflows covering
+the jobs people actually ask an agent to do, and each one carries the route: which tool runs
+first, what to fall back to when a provider is rate-limited, how many billable calls the job
+should take, and when to stop.
+
+`search_tools` returns matching workflows next to matching tools. Following one is what stops
+an agent guessing an identifier it could have resolved, or fetching three more pages after it
+already had the answer.
+
+<Card title="Workflows" icon="route" href="/concepts/workflows">
+  All 13, and what a route carries.
+</Card>
 
 ## Why not load everything at once
 
@@ -60,8 +76,9 @@ flooding your agent's context.
 
 ## Where the data comes from
 
-Hive normalizes 13 upstream providers behind one interface. Your agent asks for a price; Hive
-decides whether that means CoinGecko, Codex, or CCXT, and tells you which one it used.
+Hive normalizes 13 data sources behind one interface, ten of them external providers. Your
+agent asks for a price; Hive decides whether that means CoinGecko, Codex, or CCXT, and tells
+you which one it used.
 
 <Card title="Data sources" icon="database" href="/concepts/data-sources">
   What each provider covers.

@@ -1,0 +1,117 @@
+---
+title: "Workflows"
+description: "The 13 task routes Hive uses to turn a question into a bounded sequence of calls."
+---
+
+Discovery finds you a tool. A workflow tells your agent what to do with it.
+
+Hive groups its catalog into 13 workflows. Each one covers a job someone actually asks an
+agent to do, and carries the sequence of calls that answers it: which tool runs first, what to
+fall back to when a provider is unavailable, how many billable calls the job should take, and
+when to stop.
+
+When your agent calls `search_tools`, it gets matching workflows alongside matching tools. Most
+agents use the workflow.
+
+## Why this exists
+
+A catalog of 607 tools answers "what can I call". It does not answer "what should I call, in
+what order, and when am I done".
+
+Left to work that out alone, an agent tends to make the same mistakes: it calls a tool without
+the identifier that tool needs, it keeps fetching after it already has the answer, or it hits a
+rate-limited provider and stops rather than trying the alternative. Workflows carry that
+knowledge so the agent does not have to rediscover it every session.
+
+## The 13 workflows
+
+| Workflow | What it answers | Routes |
+|---|---|---|
+| Market Research | Price, market cap, OHLC, exchanges, order books, derivatives | 2 |
+| Token Diligence | One token across metadata, liquidity, holders, DEX pairs, risk | 2 |
+| Wallet Investigation | Balances, transfers, profit and loss, NFTs, DeFi positions | 2 |
+| Security Risk | Contract, approval, address, dApp and phishing checks | 3 |
+| On-chain DEX and Pool Analysis | Pools, pairs, liquidity, trades, trending DEX activity | 2 |
+| DeFi Protocol Analysis | TVL, fees, revenue, stablecoins, bridges, yields | 4 |
+| NFT Research | Ownership, metadata, floors, sales, rarity, spam checks | 2 |
+| Network Infrastructure | Chain state, gas, blocks, receipts, transaction status | 2 |
+| Solana Analysis | Solana wallets, SPL accounts, parsed transactions, priority fees | 3 |
+| Prediction Markets | Markets, events, prices, outcomes, traders | 2 |
+| RWA Perp Analysis | Tokenized stocks, ETFs, commodities and FX across five venues | 3 |
+| Stateful Monitoring | Durable monitors that persist between agent sessions | 3 |
+| Search and Discovery | Routing a vague request to the right workflow and tools | 2 |
+
+That is 32 routes in total. A workflow has more than one route when the same subject gets asked
+about in different ways: Security Risk separates a contract check from an approval check from a
+transaction preflight, because those need different inputs and different tools.
+
+## What a route carries
+
+Take the spot snapshot route in Market Research, which answers questions like "what is BTC
+trading at, and is there enough liquid venue coverage?".
+
+<Steps>
+  <Step title="Trigger">
+    When the route applies. Here: a current price, market context, or a quick asset check.
+  </Step>
+  <Step title="Required identifiers">
+    What the agent must resolve before calling anything. Here: an exact asset id and a quote
+    currency. Half of all bad tool calls come from guessing an identifier instead of resolving
+    it first.
+  </Step>
+  <Step title="Ordered steps">
+    Each step names a phase, a purpose, a primary tool, and a fallback. The spot snapshot
+    starts by fetching the current observation with `get_price`.
+  </Step>
+  <Step title="Call budget">
+    `maxMaterialCalls` caps the billable calls the route should need. Twenty-six of the 32
+    routes allow 4. The six that allow 2 or 3 are the cheaper jobs: both discovery routes, all
+    three RWA routes, and the chain protocol landscape route in DeFi.
+  </Step>
+  <Step title="Stop condition">
+    What "done" looks like, so the agent returns an answer instead of gathering more.
+  </Step>
+</Steps>
+
+## Fallbacks are conditional, not automatic
+
+Every step names a fallback tool, and every fallback carries the condition that permits it:
+
+> Use only when the primary is unavailable, gated, rate-limited, stale for the decision, or
+> lacks the required identifier coverage.
+
+Your agent does not silently swap providers to get a nicer-looking answer. When it does fall
+back, the receipt names the provider that actually served the data, so you can see the
+substitution rather than infer it.
+
+## Reading them yourself
+
+`search_tools` returns workflows at three levels of detail, and defaults to the smallest:
+
+| Detail | What you get |
+|---|---|
+| `compact` | Purpose, outcome, required identifiers, providers, matching routes |
+| `standard` | Adds tags, runtime statuses, and the execution policy |
+| `full` | Adds the output schema and the full tool coverage list |
+
+Use `full` only when you need the output schema. On a typical query it returns close to five
+times the payload of `compact`, and that context is usually better spent on the problem.
+
+```bash
+hive tools search "wallet"
+```
+
+The `hive://toolsets` resource lists all 13 without a tool call, which is useful when you want
+to read them once and cache the result.
+
+## When to skip them
+
+Workflows help when the shape of the job is unclear. They add nothing when it is not.
+
+If you already know the tool you want, call `invoke_api_endpoint` with its name and skip
+discovery. If every question you ask lives in one category, connect to that category endpoint
+instead and your agent sees those tools directly, with no discovery step at all.
+
+<Card title="How Hive works" icon="compass" href="/concepts/how-it-works">
+  The discovery loop these routes sit on top of.
+</Card>
