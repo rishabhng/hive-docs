@@ -9,7 +9,8 @@ Two separate ceilings apply: how fast you can call, and how much you can call in
 
 | Plan | Rate limit |
 |---|---|
-| Free | 30 requests/min |
+| Free | 100 requests/min |
+| Starter | 300 requests/min |
 | Pro | 500 requests/min |
 | Enterprise | Custom |
 
@@ -23,15 +24,21 @@ Credits are separate and tracked on your account rather than per key:
 | Plan | Monthly credits |
 |---|---|
 | Free | 10,000 |
+| Starter | 100,000 |
 | Pro | 500,000 |
 | Enterprise | Custom |
 
-Creating more keys does not create more allowance.
+Creating more keys does not create more allowance. The per-minute limit is per account too:
+every key on the account and every connected OAuth client draw from one shared bucket.
 
 ## When you hit either
 
 Hive stops. There is no overage billing, so an agent stuck in a loop produces errors rather
-than an invoice. Requests fail with a quota error naming the cause and the reset time.
+than an invoice. Requests fail with a quota error naming the cause.
+
+The per-minute rate limit returns a `Retry-After` header. The monthly credit error does not:
+it tells you to upgrade or wait for the next cycle without naming a time, so do not parse one
+out of it.
 
 Current balance and cycle end are on
 [dashboard usage](https://www.hiveintelligence.xyz/dashboard/usage).

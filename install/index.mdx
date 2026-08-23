@@ -1,6 +1,6 @@
 ---
 title: "Install Hive"
-description: "Connect Hive's MCP endpoint to Claude, Cursor, VS Code, ChatGPT, and five other clients."
+description: "Connect Hive's MCP endpoint to Claude, Cursor, VS Code, ChatGPT, and four other clients."
 ---
 
 Every client connects to the same endpoint:
@@ -11,10 +11,14 @@ https://mcp.hiveintelligence.xyz/mcp
 
 What differs is where the config lives and what the file looks like. Pick your client.
 
-## Clients with browser authorization
+## The nine supported clients
 
-These handle OAuth themselves. You add the URL, they open a browser on first connect, and
-they store the credential outside your config file. No secret in `mcp.json`.
+Most of these handle OAuth themselves: you add the URL, they open a browser on first connect,
+and they store the credential outside your config file, so no secret goes in `mcp.json`.
+
+Two work differently. ChatGPT has no config file at all and is added through a plan-gated
+developer surface, and Codex CLI expects a bearer token in `~/.codex/config.toml`. Their pages
+cover both.
 
 <CardGroup cols={2}>
   <Card title="Claude Code" icon="terminal" href="/install/claude-code">

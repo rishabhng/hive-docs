@@ -22,8 +22,9 @@ description: "Common questions about connecting to and building on Hive."
   </Accordion>
 
   <Accordion title="Do I need my own provider API keys?">
-    No. Hive holds the upstream credentials and manages their rate limits. One Hive
-    credential covers every provider.
+    Almost never. Hive holds the upstream credentials and manages their rate limits for every
+    source except RWA Perps. If a source needs a credential Hive does not hold, the call
+    returns `missing_key` so you can tell it apart from an outage.
   </Accordion>
 
   <Accordion title="Why does my agent only see eight tools?">

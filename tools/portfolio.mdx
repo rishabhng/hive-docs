@@ -32,6 +32,12 @@ is deployed.
 ## From the CLI
 
 ```bash
-hive tools search "<what you are trying to do>"
+hive tools search "<keyword>"
 hive tools info <tool_name>
 ```
+
+<Note>
+  The CLI matches literal text against tool names and descriptions, so search for a keyword
+  like `funding` or `holders`. `search_tools` above understands intent; `hive tools search`
+  does not, and a full phrase returns nothing.
+</Note>

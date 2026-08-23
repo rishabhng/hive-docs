@@ -1,10 +1,14 @@
 ---
 title: "Data sources"
-description: "The 13 providers behind Hive, and what each one contributes."
+description: "The 13 data sources behind Hive, and what each one contributes."
 ---
 
-Hive normalizes 13 upstream providers behind one interface. Your agent asks a question; Hive
-decides which source answers it and tells you which one it used.
+Hive normalizes 13 data sources behind one interface. Ten are external providers. The other
+three are Hive's own: an archive of historical derivatives data, a normalized RWA perpetuals
+feed, and an allowlisted fetch for public APIs that have no dedicated integration.
+
+Your agent asks a question; Hive decides which source answers it and tells you which one it
+used.
 
 ## The providers
 
@@ -35,8 +39,11 @@ legitimately cite different sources on different days.
 ## Managed keys
 
 Hive holds the upstream credentials. You do not sign up with CoinGecko or Alchemy separately,
-and you do not manage their rate limits. One Hive credential covers everything in the table
-above.
+and you do not manage their rate limits.
+
+That covers every source in the table above except RWA Perps, which is not a managed key. If a
+source needs a credential Hive does not hold, calls to it return `missing_key` rather than
+failing silently, so you can tell the difference from an outage.
 
 ## Only official endpoints
 

@@ -17,8 +17,8 @@ you find REST described as a way to use Hive, that is stale copy to remove.
 ## Where facts come from
 
 Every number, endpoint, tool count, provider name, plan limit, and client name traces to
-`src/data/mcp-facts.ts` in the website repository (`sharpe-labs/hive-intelligence`), or to
-`src/lib/pricing.ts` for plan pricing. Do not invent counts and do not round them.
+`src/data/mcp-facts.ts` in the private Hive website codebase, or to `src/lib/pricing.ts`
+for plan pricing. Do not invent counts and do not round them.
 
 Current values at the time of writing:
 

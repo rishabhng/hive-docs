@@ -3,21 +3,53 @@ title: "CLI commands"
 description: "Reference for the Hive CLI, verified against the shipped command tree."
 ---
 
-Commands are grouped under `tools`, `auth`, `config`, and `keys`. Run `hive --help` for the
-list on your installed version, or `hive <group> --help` for one group.
+The CLI has three kinds of commands: ten data domains that query Hive directly, four management
+groups, and a set of top-level utilities. Run `hive --help` for the list on your installed
+version, or `hive <group> --help` for one group.
 
-Most commands accept `--json` for machine-readable output, which is what you want in scripts.
+## Data domains
+
+These are the fastest way to get an answer. Each domain maps onto a set of tools, so you do not
+have to look up a tool name first.
+
+```bash
+hive market price --ids bitcoin --vs usd
+```
+
+| Domain | Subcommands |
+|---|---|
+| `hive market` | `price`, `top`, `trending`, `global`, `ohlc`, `chart`, `gainers` |
+| `hive defi` | `tvl`, `protocols`, `fees`, `yields`, `chains`, `bridges` |
+| `hive portfolio` | `balance`, `tokens`, `positions`, `nfts`, `history` |
+| `hive security` | `scan`, `approve`, `simulate`, `rugpull`, `hacks` |
+| `hive exchange` | `ticker`, `orderbook`, `trades`, `funding`, `list` |
+| `hive dex` | `trending`, `pools`, `trades`, `volume`, `pairs` |
+| `hive wallet` | `balances`, `transfers`, `transactions`, `approvals` |
+| `hive nft` | `trending`, `collection`, `markets`, `search` |
+| `hive network` | `chains`, `block-number`, `resolve` |
+| `hive search` | `tokens`, `pools` |
+
+Run `hive <domain> --help` to see the flags each subcommand takes. Two things worth knowing:
+
+- Every subcommand also accepts `--args '<json>'` if you would rather pass the whole payload at
+  once.
+- If you leave out a required flag in an interactive terminal, the CLI prompts you for it
+  instead of failing. In a script it exits with code 2, so pass every flag explicitly.
 
 ## Setup
 
 | Command | What it does |
 |---|---|
 | `hive init` | Interactive per-client MCP setup |
-| `hive init --all --browser` | Configure every detected client, with browser sign-in |
+| `hive init --all --browser` | Configure every detected client and install the skill packs, with browser sign-in |
 | `hive setup [client]` | Set up one client, for example `hive setup cursor` |
 | `hive doctor` | Check API key, endpoint reachability, tool catalog, and updates |
 | `hive upgrade` | Update the CLI |
-| `hive uninstall` | Remove Hive configuration |
+| `hive uninstall` | Remove Hive MCP entries and delete copied skill packs |
+
+`--all` installs all 17 skill packs into your clients' skills directories. Pass `--skip-skills`
+to configure the clients without them. Both `init` and `uninstall` accept `--dry-run` if you
+want to see what would change first.
 
 ## Tools
 
@@ -26,9 +58,19 @@ Discovery and execution live under `hive tools`:
 | Command | What it does |
 |---|---|
 | `hive tools list` | List registered tools. Accepts `--category`, `--provider`, `--limit`, `--offset` |
-| `hive tools search <query>` | Search tools by name or description |
+| `hive tools search <query>` | Filter tools whose name, title, or description contains your text |
 | `hive tools info <name>` | Show a tool's schema and description |
 | `hive tools call <name> --args '<json>'` | Execute a tool. Arguments can also be piped as JSON on stdin |
+| `hive tools refresh` | Force-refresh the cached tool catalog |
+
+<Note>
+  `hive tools search` matches literal text, not intent. Search for a keyword like `funding` or
+  `nft`, not a phrase like "what is this token worth". A phrase that does not appear verbatim in
+  a tool's name or description returns no results.
+</Note>
+
+`hive tools list` returns 50 tools at a time. Use `--limit` and `--offset` to page through the
+full catalog.
 
 ## Authentication
 
@@ -50,31 +92,40 @@ commands act on the profile that is already active, and reject `--profile` with
 | Command | What it does |
 |---|---|
 | `hive keys list` | List keys on your account |
-| `hive keys create` | Create a key. The secret prints once |
+| `hive keys create` | Create a key. Accepts `--name <name>`. The secret prints once |
 | `hive keys revoke <id>` | Disable a key |
 
 ## Client configuration
 
-`hive config` prints config for a client rather than writing it, which is useful when you
-want to paste it yourself or check what `setup` would do:
+`hive config` prints setup instructions for a client rather than writing them, which is useful
+when you want to apply them yourself or check what `setup` would do. What it prints depends on
+how that client accepts remote servers:
 
-| Command | What it does |
+| Command | What it prints |
 |---|---|
-| `hive config claude-desktop` | Print Claude Desktop config JSON |
-| `hive config claude-code` | Print Claude Code config |
-| `hive config cursor` | Print Cursor config JSON |
-| `hive config vscode` | Print VS Code config JSON |
-| `hive config codex` | Print Codex config |
-| `hive config grok` | Print Grok config |
-| `hive config http [url]` | Print remote HTTP connection instructions |
+| `hive config cursor` | A `mcpServers` JSON block for `.cursor/mcp.json` |
+| `hive config http [url]` | A generic JSON block for any MCP client |
+| `hive config claude-desktop` | Numbered steps for the Connectors UI. Claude Desktop's config file is stdio-only, so there is no JSON block to paste |
+| `hive config vscode` | A one-click `vscode:mcp/install` link and a `code --add-mcp` command |
+| `hive config claude-code` | The `claude mcp add` command to run |
+| `hive config codex` | The Codex MCP add and OAuth login commands |
+| `hive config grok` | Instructions for adding a custom connector |
 
 ## Other
 
 | Command | What it does |
 |---|---|
-| `hive serve` | Run Hive as a local stdio MCP server |
+| `hive` | With no subcommand, starts the stdio MCP server |
+| `hive serve` | Run Hive as a local stdio MCP server. `--http` and `--port <number>` run the HTTP transport instead |
+| `hive usage` | Show your current usage against your plan limits |
+| `hive status` | Version, active profile, masked key, and endpoint reachability |
+| `hive open [target]` | Open `dashboard`, `docs`, `status`, or `github` in a browser |
+| `hive watch <domain> <command>` | Re-run a domain command on an interval. `--interval <seconds>` defaults to 30 |
 | `hive alias set <name> <command>` | Save a shorthand for a call you run often |
-| `hive completion <shell>` | Generate shell completions |
+| `hive alias list` | List saved aliases |
+| `hive alias remove <name>` | Delete an alias |
+| `hive telemetry enable\|disable\|status` | Control anonymous usage reporting, which is off by default |
+| `hive completion <shell>` | Generate completions for `bash`, `zsh`, `fish`, or `powershell`. `--install` writes them to your shell config |
 
 `serve` is for clients that only speak stdio, or for local development against your own
 provider keys. Most users should connect to the hosted endpoint instead.
@@ -90,14 +141,46 @@ hive tools call get_token_price --args '{"token":"ETH"}' --json
 The envelope has `ok`, `data`, and `meta`, where `meta` carries the tool name, provider, and
 runtime status.
 
+<Warning>
+  `--json` is honored by `hive tools list`, `search`, `info`, and `call`, plus `hive doctor`,
+  `hive status`, and `hive upgrade`. Other commands, including everything under `auth` and
+  `keys`, ignore it and write human-readable text to stderr. Piping those to `jq` gives you an
+  empty stdout, not an error.
+</Warning>
+
 Useful global flags:
 
 | Flag | What it does |
 |---|---|
 | `--json` | Machine-readable envelope |
-| `--jq <filter>` | Filter `data` without piping to an external tool |
+| `--jq <expr>` | Filter `data` with a built-in expression evaluator |
 | `--fields <list>` | Keep only the named fields |
 | `--csv` | CSV output when `data` is an array |
-| `--quiet` | Suppress the human-readable status line |
+| `--api-key <key>` | Override the stored key for one command |
+| `--timeout <ms>` | Tool execution timeout, default `30000` |
+| `--no-retry` | Do not retry on failure |
+| `--no-cache` | Bypass the tool catalog cache |
+| `--env-file <path>` | Load a specific `.env`, default `.env` |
+| `-q, --quiet` | Suppress all non-data output |
+| `-v, --verbose` | Show debug info |
 
-Exit codes are stable, so `hive doctor` works as a health check in CI.
+`--jq` is a small built-in evaluator, not a bundled copy of `jq`. It supports `.field`, `.a.b`,
+`.[N]`, `.[]`, and `select(.field op value)`. For anything more, pipe `--json` into real `jq`.
+
+`-q` suppresses everything that is not data, including the tools table. `hive tools list -q`
+prints nothing at all unless you also pass `--json`.
+
+## Exit codes
+
+Exit codes are stable, so `hive doctor` works as a health check in CI:
+
+| Code | Meaning |
+|---|---|
+| `0` | Success |
+| `1` | General error |
+| `2` | Invalid arguments |
+| `3` | Tool not found |
+| `4` | API error |
+| `5` | Authentication failure |
+| `6` | Rate limited |
+| `124` | Timeout |

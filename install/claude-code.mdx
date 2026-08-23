@@ -25,8 +25,9 @@ claude mcp login hive
 ```
 
 <Note>
-  `claude mcp login` needs an interactive terminal because it prompts you to paste back a
-  redirect URL. It will not complete inside a non-interactive session or a CI job.
+  `claude mcp login` needs an interactive terminal. By default it opens a browser; over SSH or
+  in a headless shell, `claude mcp login hive --no-browser` prints the authorization URL and
+  waits for you to paste the redirect back. Neither form completes inside a CI job.
 </Note>
 
 ## Ask something

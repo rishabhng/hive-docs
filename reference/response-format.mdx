@@ -1,6 +1,6 @@
 ---
 title: "Response format"
-description: "Where Hive attaches provenance, and how the shape differs between hero tools and category tools."
+description: "Where Hive attaches provenance across the three surfaces that return it."
 ---
 
 Responses are typed and bounded, and material ones carry provenance. Where that provenance
@@ -14,8 +14,8 @@ Tools reached through discovery attach a top-level `_hive` object alongside the 
 {
   "_hive": {
     "receipt_id": "9f2c…",
-    "provider": "coingecko",
-    "tool": "get_coin_price",
+    "provider": "CoinGecko",
+    "tool": "get_price",
     "runtime_status": "ok",
     "fetched_at": "2026-08-19T14:22:07Z",
     "cache_status": "miss",
@@ -30,23 +30,54 @@ normalized payload. They let you detect accidental mutation; they are not server
 
 ## Hero tools
 
-The three hero tools return a `source_receipt` instead:
+The three hero tools add a `source_receipt` describing the provider call they made underneath,
+alongside their own top-level `_hive`:
 
 ```json
 {
   "source_receipt": {
-    "provider": "coingecko",
-    "tool": "get_coin_price",
+    "provider": "CoinGecko",
+    "tool": "get_price",
     "runtime_status": "ok",
     "fetched_at": "2026-08-19T14:22:07Z",
     "cache_status": "hit",
-    "source": "…",
+    "source": "cached",
     "receipt_id": "9f2c…"
   }
 }
 ```
 
+A hero response carries both objects, so do not treat a missing `_hive` as the way to detect
+one. `source` is an enum with four values: `live`, `cached`, `fallback`, and `unavailable`.
+
 Same three fields you care about, different container. See [receipts](/concepts/receipts).
+
+## CLI
+
+`hive ... --json` is a third shape. It wraps everything in an envelope, and the provenance
+lands in `meta` rather than `_hive` or `source_receipt`:
+
+```json
+{
+  "ok": true,
+  "data": {},
+  "meta": {
+    "tool": "get_token_price",
+    "provider": "Hive",
+    "runtime_status": "ok",
+    "source": "live",
+    "truncated": false,
+    "quota_remaining": 9775
+  }
+}
+```
+
+`meta.tool` is the tool you called and `meta.provider` is the surface that served it, so a hero
+tool reads `Hive` here. The upstream provider for that call is in `source_receipt` inside
+`data`, not in `meta`.
+
+`--jq` filters `data` only, so `--jq '.price'` reaches into the payload and not the envelope.
+`--jq '.ok'` returns nothing, because `ok` lives on the envelope.
 
 ## runtime_status values
 
@@ -88,9 +119,13 @@ Your agent decides what to do with a flagged row. Hive does not filter it out fo
 
 ## Bounded output
 
-Every list-returning tool respects `limit`, `page`, `per_page`, and `offset`, and Hive caps
-total response size regardless of what you ask for. An unbounded response would burn the
-context your agent needs for the actual task.
+Where a list-returning tool supports `limit`, `page`, `per_page`, or `offset`, use them. Not
+every tool takes all four, so check the schema with `get_api_endpoint_schema` or
+`hive tools info <name>`.
+
+Hive caps total response size regardless of what you ask for: 25,000 tokens, or roughly 100,000
+characters. Responses trimmed to fit set `truncated` to `true`. An unbounded response would burn
+the context your agent needs for the actual task.
 
 ## Errors
 
