@@ -46,7 +46,11 @@ than it could be, and considerably more stable.
 
 ## What Hive deliberately does not cover
 
-Hive serves raw datapoints, not opinions, and skips anything your model can already search
-for. There are no news feeds, social sentiment scores, or trend summaries. Those are things
-an LLM with web access handles better, and wrapping them in an API would add a stale layer
+Hive serves raw datapoints, not opinions, and skips most of what your model can already
+search for. There are no social sentiment scores and no trend summaries. Those are things an
+LLM with web access handles better, and wrapping them in an API would add a stale layer
 between your agent and the source.
+
+News is carried, because CoinGecko already publishes it as structured data rather than as a
+page to be scraped: `get_news` returns its article feed, filterable by coin, and
+`get_coin_insights` returns its research notes on an Enterprise plan.

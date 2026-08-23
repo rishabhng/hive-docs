@@ -14,14 +14,19 @@ That makes coverage narrower in places than competitors who do scrape, and consi
 stable. A scraped source breaks without warning when the site changes; a documented API
 deprecates on a schedule.
 
-## No LLM-searchable data
+## Little LLM-searchable data
 
-Hive deliberately does not serve news, social sentiment, trend scores, or web summaries. Your
-model already searches the web better than an API wrapper would, and putting a stale caching
-layer between your agent and a news source makes the answer worse.
+Hive does not serve social sentiment, trend scores, or web summaries. Your model already
+searches the web better than an API wrapper would, and putting a stale caching layer between
+your agent and an open web source makes the answer worse.
 
-Hive covers what a model cannot get any other way: live market state, on-chain data, and
-contract risk.
+News is the exception: `get_news` returns CoinGecko's article feed with title, description,
+URL, author and publication date, filterable by coin, and `get_coin_insights` returns
+CoinGecko's research notes on an Enterprise plan. Both are ordinary credentialed tools that
+cost a credit like any other.
+
+What Hive is for is what a model cannot get any other way: live market state, on-chain data,
+and contract risk.
 
 ## Raw datapoints, not opinions
 

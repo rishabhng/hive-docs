@@ -41,7 +41,9 @@ Discovery and execution live under `hive tools`:
 | `hive auth profiles` | List profiles |
 | `hive auth switch <name>` | Switch the active profile |
 
-Every auth command takes `--profile <name>` if you keep more than one account.
+Only `hive auth login` and `hive auth signup` take `--profile <name>`. The other four
+commands act on the profile that is already active, and reject `--profile` with
+`error: unknown option`. Use `hive auth switch <name>` to change which one that is.
 
 ## Keys
 

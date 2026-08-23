@@ -64,8 +64,10 @@ description: "Common questions about connecting to and building on Hive."
   </Accordion>
 
   <Accordion title="Does Hive cover news or sentiment?">
-    No, deliberately. Your model searches the web better than an API wrapper would. Hive
-    covers what a model cannot get otherwise: live market state, on-chain data, and contract
-    risk.
+    News yes, sentiment no. `get_news` returns CoinGecko's article feed, filterable by coin,
+    and `get_coin_insights` returns its research notes on an Enterprise plan. There are no
+    social sentiment scores or trend summaries: your model searches the open web better than
+    an API wrapper would. The rest of Hive is what a model cannot get otherwise, which is live
+    market state, on-chain data, and contract risk.
   </Accordion>
 </AccordionGroup>
