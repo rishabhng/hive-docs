@@ -1,0 +1,51 @@
+---
+title: "Qwen Code"
+description: "Add Hive to Qwen Code over remote MCP with a bearer token."
+---
+
+## Add the server
+
+```bash
+qwen mcp add --transport http hive https://mcp.hiveintelligence.xyz/mcp \
+  --header "Authorization: Bearer YOUR_HIVE_API_KEY"
+```
+
+See [authentication](/authentication) for where to get a key.
+
+## Or edit settings.json
+
+Add an `mcpServers` block to `~/.qwen/settings.json`, or to `.qwen/settings.json` in the
+project root:
+
+```json
+{
+  "mcpServers": {
+    "hive": {
+      "httpUrl": "https://mcp.hiveintelligence.xyz/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_HIVE_API_KEY"
+      }
+    }
+  }
+}
+```
+
+<Note>
+  Qwen Code uses `httpUrl` for a streamable HTTP server like Hive. It also accepts `url`, but
+  that selects its SSE transport, which is not what you want here. This is the same split
+  Gemini CLI has.
+</Note>
+
+<Note>
+  Qwen Code can do OAuth, but its configuration expects an explicit `oauth.clientId` and
+  `oauth.tokenUrl`. Hive issues clients by dynamic registration rather than handing out a
+  static id, so the bearer token above is the supported path today.
+</Note>
+
+## Verify
+
+```bash
+qwen mcp list
+```
+
+`hive` should appear. Then start a session and ask for a live price.

@@ -1,0 +1,41 @@
+---
+title: "Kimi Code CLI"
+description: "Add Hive to Kimi Code CLI over remote MCP, with browser authorization."
+---
+
+<Note>
+  MCP is a Kimi Code CLI feature. The Kimi chatbot at kimi.com has no connector surface, so
+  this page is the way to use Hive with Kimi.
+</Note>
+
+## Add the server
+
+```bash
+kimi mcp add --transport http --auth oauth hive https://mcp.hiveintelligence.xyz/mcp
+kimi mcp auth hive
+```
+
+`kimi mcp auth` opens a browser. Approve the connection there and Kimi stores the credential
+outside your config file, so no secret goes on disk.
+
+## Headless use
+
+Where no browser is available, pass a key in the header instead:
+
+```bash
+kimi mcp add --transport http hive https://mcp.hiveintelligence.xyz/mcp \
+  --header "Authorization: Bearer YOUR_HIVE_API_KEY"
+```
+
+See [authentication](/authentication) for where to get a key.
+
+## Verify
+
+```bash
+kimi mcp list
+```
+
+`hive` should appear as connected. Then start a session and ask for a live price.
+
+Kimi Code CLI keeps its servers in `~/.kimi-code/mcp.json` under `mcpServers`, or in
+`.kimi-code/mcp.json` in the working directory for a project-scoped server.

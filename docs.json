@@ -30,6 +30,8 @@
           "install/chatgpt",
           "install/grok",
           "install/codex",
+          "install/kimi-cli",
+          "install/qwen-code",
           "install/gemini-cli",
           "install/generic"
         ]

@@ -1,6 +1,6 @@
 ---
 title: "Install Hive"
-description: "Connect Hive's MCP endpoint to Claude, Cursor, VS Code, ChatGPT, and four other clients."
+description: "Connect Hive's MCP endpoint to Claude, Cursor, VS Code, ChatGPT, and six other clients."
 ---
 
 Every client connects to the same endpoint:
@@ -11,7 +11,7 @@ https://mcp.hiveintelligence.xyz/mcp
 
 What differs is where the config lives and what the file looks like. Pick your client.
 
-## The nine supported clients
+## The eleven supported clients
 
 Most of these handle OAuth themselves: you add the URL, they open a browser on first connect,
 and they store the credential outside your config file, so no secret goes in `mcp.json`.
@@ -47,6 +47,12 @@ cover both.
   </Card>
   <Card title="Gemini CLI" icon="gem" href="/install/gemini-cli">
     `~/.gemini/settings.json`
+  </Card>
+  <Card title="Kimi Code CLI" icon="terminal" href="/install/kimi-cli">
+    `kimi mcp add`, then authorize.
+  </Card>
+  <Card title="Qwen Code" icon="terminal" href="/install/qwen-code">
+    `~/.qwen/settings.json`
   </Card>
 </CardGroup>
 
