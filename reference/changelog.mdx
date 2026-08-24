@@ -17,11 +17,17 @@ description: "Notable changes to the Hive MCP server, CLI, and skills."
   liquidations.
 </Update>
 
+<Update label="August 2026" description="CLI 1.4.0">
+  `hive-intelligence` 1.4.0 is on npm and the hosted runtime serves it. It fixes
+  `hive auth login`, which previously failed on every attempt, and stops login minting a new
+  API key each time you sign in. Sign-in now also accepts GitHub and Google, and the email path
+  sends a 6-digit code as well as a link. `hive auth signup` and the `hive keys` group are
+  retired: manage keys in the dashboard. Run `hive upgrade` to move an existing install.
+</Update>
+
 <Update label="August 2026" description="CLI 1.3.0">
-  The `hive-intelligence` 1.3.0 release candidate ships the CLI with
-  `hive init --all --browser`, which detects installed clients and writes their config for
-  you. npm and the hosted runtime may remain on the previous release until the ordered
-  deployment completes.
+  The `hive-intelligence` 1.3.0 release ships the CLI with `hive init --all --browser`, which
+  detects installed clients and writes their config for you.
 </Update>
 
 <Update label="August 2026" description="Anonymous lane">

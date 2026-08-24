@@ -47,7 +47,7 @@ avoids nearly all of them.
 | Error | Cause | Fix |
 |---|---|---|
 | Provider unavailable | The upstream source is down or not configured | Retry later; check `runtime_status` |
-| Provider degraded | The source answered but is unhealthy | Treat the result as low confidence, re-run if it matters |
+| Provider degraded | The source timed out or returned a 5xx, so it is unstable right now | Retry after a pause; treat any partial result as low confidence |
 | Upstream timeout | The provider did not respond in time | Retry once, then fall back |
 
 A provider being unavailable is not the same as a datapoint being absent. Hive distinguishes

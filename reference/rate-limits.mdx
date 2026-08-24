@@ -17,6 +17,10 @@ Two separate ceilings apply: how fast you can call, and how much you can call in
 Exceeding it returns a rate limit error with headers telling you when to retry. Back off
 rather than retrying immediately, or you will simply consume the next window too.
 
+These rates apply once you are authenticated, by key or by OAuth. The keyless anonymous lane
+runs on its own lower per-IP ceiling of 30 requests per minute, on top of its 25 material calls
+per IP per day, so add a key before you measure throughput.
+
 ## Per month
 
 Credits are separate and tracked on your account rather than per key:
@@ -36,9 +40,11 @@ every key on the account and every connected OAuth client draw from one shared b
 Hive stops. There is no overage billing, so an agent stuck in a loop produces errors rather
 than an invoice. Requests fail with a quota error naming the cause.
 
-The per-minute rate limit returns a `Retry-After` header. The monthly credit error does not:
-it tells you to upgrade or wait for the next cycle without naming a time, so do not parse one
-out of it.
+Both errors return a `Retry-After` header on the MCP endpoint. The per-minute limit returns the
+seconds left in the current window. The monthly credit error returns 60 and, when your billing
+cycle end is known, also names that exact instant in its message and `next_action`, so back off
+to the named reset rather than retrying every minute. On the REST API the credit error carries
+`X-Quota-Remaining` instead, with no `Retry-After` and no reset time.
 
 Current balance and cycle end are on
 [dashboard usage](https://www.hiveintelligence.xyz/dashboard/usage).

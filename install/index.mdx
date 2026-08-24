@@ -17,8 +17,8 @@ Most of these handle OAuth themselves: you add the URL, they open a browser on f
 and they store the credential outside your config file, so no secret goes in `mcp.json`.
 
 Two work differently. ChatGPT has no config file at all and is added through a plan-gated
-developer surface, and Codex CLI expects a bearer token in `~/.codex/config.toml`. Their pages
-cover both.
+developer surface, and Qwen Code expects a bearer token in `~/.qwen/settings.json`, because its
+OAuth configuration needs a static client id that Hive does not issue. Their pages cover both.
 
 <CardGroup cols={2}>
   <Card title="Claude Code" icon="terminal" href="/install/claude-code">

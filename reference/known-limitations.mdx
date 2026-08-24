@@ -50,6 +50,13 @@ indicative.
 25 material calls per IP per day is enough to judge whether Hive fits. It is not a production
 tier, and it is capped per IP, so shared networks share the allowance.
 
+## Some provider endpoints are Pro-gated upstream
+
+DeFiLlama's perpetual and derivatives endpoints need a DeFiLlama Pro subscription, and so do its
+Pro yield extensions. Those calls return `plan_required` or `missing_key` rather than data. For
+perpetual funding, use the CCXT tools instead, and check exact arguments with
+`get_api_endpoint_schema` first.
+
 ## Docs counts can lag deployment
 
 Tool counts in these docs describe the current release. The deployed catalog is the

@@ -75,10 +75,15 @@ trading at, and is there enough liquid venue coverage?".
 
 ## Fallbacks are conditional, not automatic
 
-Every step names a fallback tool, and every fallback carries the condition that permits it:
+Most steps name a fallback tool, and every fallback carries the condition that permits it:
 
 > Use only when the primary is unavailable, gated, rate-limited, stale for the decision, or
 > lacks the required identifier coverage.
+
+Eleven of the 82 route steps have no substitute at all. Their condition reads instead: "No
+automatic substitute. Stop this route and report the missing phase instead of guessing or
+broadening scope."
+
 
 Your agent does not silently swap providers to get a nicer-looking answer. When it does fall
 back, the receipt names the provider that actually served the data, so you can see the

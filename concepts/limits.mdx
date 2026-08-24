@@ -33,9 +33,10 @@ Current pricing lives at
 Requests fail with a quota error naming the cause. Nothing is billed beyond your subscription,
 and no request silently degrades to worse data.
 
-The credit error tells you to upgrade or wait for the next cycle, but it does not carry a reset
-timestamp or a `Retry-After` header. Only the per-minute rate limit and the anonymous daily
-quota tell you when to retry.
+The credit error tells you to upgrade or wait for the next cycle. On the MCP endpoint it also
+names the exact instant your credits refill, taken from your billing cycle, and sends
+`Retry-After: 60`. On the REST API the same error carries `X-Quota-Remaining` but no
+`Retry-After` and no refill instant, so read your cycle end from dashboard usage instead.
 
 Your credits reset on a rolling cycle, not on the first of the month. The cycle is anchored to
 when your account was created, or to your most recent payment if you are on a paid plan. You

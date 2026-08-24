@@ -10,9 +10,9 @@ description: "Common questions about connecting to and building on Hive."
   </Accordion>
 
   <Accordion title="Which clients work?">
-    Nine have their own guide: Claude Code, Claude Desktop, Cursor, Windsurf, VS Code,
-    ChatGPT, Grok, Codex CLI, and Gemini CLI. Any client that speaks MCP over Streamable HTTP
-    works, whether or not it is listed. See [install](/install).
+    Eleven have their own guide: Claude Code, Claude Desktop, Cursor, Windsurf, VS Code,
+    ChatGPT, Grok, Codex CLI, Kimi Code CLI, Qwen Code, and Gemini CLI. Any client that speaks
+    MCP over Streamable HTTP works, whether or not it is listed. See [install](/install).
   </Accordion>
 
   <Accordion title="Where does the data come from?">
@@ -22,9 +22,10 @@ description: "Common questions about connecting to and building on Hive."
   </Accordion>
 
   <Accordion title="Do I need my own provider API keys?">
-    Almost never. Hive holds the upstream credentials and manages their rate limits for every
-    source except RWA Perps. If a source needs a credential Hive does not hold, the call
-    returns `missing_key` so you can tell it apart from an outage.
+    Never. Hive holds the upstream credentials and manages their rate limits for every source
+    that needs one, and the RWA Perps venues need no credential at all: Hive reads their
+    official public endpoints keylessly. If a source needs a credential Hive does not hold, the
+    call returns `missing_key` so you can tell it apart from an outage.
   </Accordion>
 
   <Accordion title="Why does my agent only see eight tools?">
@@ -44,9 +45,10 @@ description: "Common questions about connecting to and building on Hive."
   </Accordion>
 
   <Accordion title="Is my API key visible in my client config?">
-    Not with OAuth, which is what every supported interactive client uses. You add only the
-    URL and the client stores its own credential. Keys are for headless environments that
-    cannot open a browser.
+    Not with OAuth, which is how most supported clients connect. You add only the URL and the
+    client stores its own credential. Qwen Code is the exception today: its OAuth configuration
+    expects a static client id that Hive does not issue, so it reads a bearer token from its
+    config. Keys are otherwise for headless environments that cannot open a browser.
   </Accordion>
 
   <Accordion title="I lost my API key. Can I retrieve it?">

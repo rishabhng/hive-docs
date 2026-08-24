@@ -16,7 +16,7 @@ book is, where it trades, and what the derivatives market thinks.
 | Question | Where it comes from |
 |---|---|
 | What is it worth? | Spot price across aggregated sources |
-| Is that price trustworthy? | Cross-venue comparison, `is_price_suspect` |
+| Is that price trustworthy? | Cross-venue comparison, plus the `provider` and `fetched_at` that every receipt carries |
 | Can I trade size? | Order book depth and pool liquidity |
 | What do derivatives say? | Funding rates, open interest, basis |
 | Where does volume actually sit? | Exchange-level volume breakdown |
@@ -26,8 +26,10 @@ book is, where it trades, and what the derivatives market thinks.
 Hive aggregates funding across 33 CEX and DEX venues, with history back to November 2023.
 That matters because a single venue's funding rate tells you about that venue, not the market.
 
-Venues also calculate funding differently. Hive surfaces `funding_mechanism` on the response
-so a comparison is honest rather than averaging incompatible numbers.
+Venues also settle funding on different intervals. Every archive funding row carries the venue,
+the settled rate and `interval_hours`, plus a `funding_annualized` derived from that row's own
+interval, so you can line up an 8-hour settlement against a 1-hour one instead of averaging
+incompatible numbers.
 
 ## Watch for
 
@@ -37,6 +39,7 @@ price. `fetched_at` tells you how old that is.
 **Delisted assets.** `is_delisted` marks assets no longer actively traded. Without checking
 it, an agent reports a price for something you cannot buy.
 
-**Suspect prices.** When sources disagree beyond a threshold, `is_price_suspect` flags it
-rather than silently picking one. Ask your agent to surface the disagreement instead of
-resolving it for you.
+**Suspect prices.** On tokenized real-world-asset perps, `is_price_suspect` flags a mark more
+than 2% off the cross-venue median when at least three venues quote the same underlying. Below
+that, the row carries `price_suspect_basis: "insufficient_venues"` instead. For crypto spot,
+compare venues yourself and read `runtime_status`, `source` and `origin_source` on the receipt.

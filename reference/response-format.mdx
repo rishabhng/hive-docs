@@ -88,10 +88,10 @@ tool reads `Hive` here. The upstream provider for that call is in `source_receip
 | `ok` | The call succeeded against a healthy provider |
 | `invalid_input` | Your arguments failed validation, or the venue and method combination is unsupported. Fixable by correcting the call |
 | `missing_key` | The provider is not configured |
-| `plan_required` | Your plan does not include this |
+| `plan_required` | The upstream provider's own plan, quota, or credits block the call, not your Hive plan |
 | `rate_limited` | Throttled |
-| `degraded` | The provider answered but is unhealthy. Treat the result as low confidence |
-| `failing` | The provider is down |
+| `degraded` | The tool exists, but the provider is temporarily unavailable or unstable. Retry after a pause, and treat any partial result as low confidence |
+| `failing` | The call returned an unexpected error, upstream or inside Hive. Read `cause` and `next_action` before deciding what to do |
 
 `invalid_input` is worth handling separately: it is not an outage, so retrying unchanged will
 fail the same way.

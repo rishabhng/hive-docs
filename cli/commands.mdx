@@ -3,7 +3,7 @@ title: "CLI commands"
 description: "Reference for the Hive CLI, verified against the shipped command tree."
 ---
 
-The CLI has three kinds of commands: ten data domains that query Hive directly, four management
+The CLI has three kinds of commands: ten data domains that query Hive directly, five management
 groups, and a set of top-level utilities. Run `hive --help` for the list on your installed
 version, or `hive <group> --help` for one group.
 
@@ -128,7 +128,7 @@ how that client accepts remote servers:
 | `hive alias list` | List saved aliases |
 | `hive alias remove <name>` | Delete an alias |
 | `hive telemetry enable\|disable\|status` | Control anonymous usage reporting, which is off by default |
-| `hive completion <shell>` | Generate completions for `bash`, `zsh`, `fish`, or `powershell`. `--install` writes them to your shell config |
+| `hive completion <shell>` | Generate completions for `bash`, `zsh`, `fish`, or `powershell`. `--install` writes them to your shell config, and supports `bash`, `zsh` and `fish` only |
 
 `serve` is for clients that only speak stdio, or for local development against your own
 provider keys. Most users should connect to the hosted endpoint instead.
@@ -145,10 +145,10 @@ The envelope has `ok`, `data`, and `meta`, where `meta` carries the tool name, p
 runtime status.
 
 <Warning>
-  `--json` is honored by `hive tools list`, `search`, `info`, and `call`, plus `hive doctor`,
-  `hive status`, and `hive upgrade`. Other commands, including everything under `auth` and
-  `keys`, ignore it and write human-readable text to stderr. Piping those to `jq` gives you an
-  empty stdout, not an error.
+  `--json` is honored by every data-domain subcommand and by `hive watch`, plus `hive tools
+  list`, `search`, `info`, and `call`, and `hive doctor`, `hive status`, and `hive upgrade`.
+  Commands that only print human-readable text, including everything under `auth`, ignore it and
+  write to stderr. Piping those to `jq` gives you an empty stdout, not an error.
 </Warning>
 
 Useful global flags:

@@ -41,9 +41,10 @@ legitimately cite different sources on different days.
 Hive holds the upstream credentials. You do not sign up with CoinGecko or Alchemy separately,
 and you do not manage their rate limits.
 
-That covers every source in the table above except RWA Perps, which is not a managed key. If a
-source needs a credential Hive does not hold, calls to it return `missing_key` rather than
-failing silently, so you can tell the difference from an outage.
+That covers every source in the table above that needs a credential at all. The RWA Perps
+venues need none: Hive reads their official public endpoints keylessly. If a source needs a
+credential Hive does not hold, calls to it return `missing_key` rather than failing silently,
+so you can tell the difference from an outage.
 
 ## Only official endpoints
 
