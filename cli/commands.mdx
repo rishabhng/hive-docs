@@ -79,21 +79,24 @@ full catalog.
 | `hive auth login` | Browser sign-in. `--manual` pastes a key instead |
 | `hive auth logout` | Remove stored credentials |
 | `hive auth whoami` | Show the current profile |
-| `hive auth signup` | Create a Hive account and get a key |
 | `hive auth profiles` | List profiles |
 | `hive auth switch <name>` | Switch the active profile |
 
-Only `hive auth login` and `hive auth signup` take `--profile <name>`. The other four
-commands act on the profile that is already active, and reject `--profile` with
-`error: unknown option`. Use `hive auth switch <name>` to change which one that is.
+Only `hive auth login` takes `--profile <name>`. The other four commands act on the profile
+that is already active, and reject `--profile` with `error: unknown option`. Use
+`hive auth switch <name>` to change which one that is.
+
+There is no signup command. `hive auth login` opens the browser, and an account is created on
+first sign-in if you do not already have one.
 
 ## Keys
 
-| Command | What it does |
-|---|---|
-| `hive keys list` | List keys on your account |
-| `hive keys create` | Create a key. Accepts `--name <name>`. The secret prints once |
-| `hive keys revoke <id>` | Disable a key |
+Key management lives in the dashboard, at
+[hiveintelligence.xyz/dashboard/connect](https://www.hiveintelligence.xyz/dashboard/connect).
+
+Most clients never need a key at all. Claude, Claude Code, Cursor and VS Code authorize
+through the browser on first connect, and `hive auth login` stores a credential for the CLI.
+A key is for the case with no browser to click: a server, a script, or CI.
 
 ## Client configuration
 
