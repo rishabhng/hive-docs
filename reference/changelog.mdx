@@ -3,6 +3,20 @@ title: "Changelog"
 description: "Notable changes to the Hive MCP server, CLI, and skills."
 ---
 
+<Update label="September 2026" description="1.6.0: Codex.io removed, vendor refresh">
+  The Codex.io provider is gone, and with it the Prediction Markets category, its category
+  endpoint, the `hive-prediction-markets` skill pack, and the `prediction_market` monitor kind.
+  Calls to a retired tool name return a classified not-found error that names the replacement.
+  CoinGecko gained the seven tokenized real-world-asset endpoints (`get_rwa_list`,
+  `get_rwa_markets`, `get_rwa_asset`, `get_rwa_tickers`, `get_rwa_market_chart`,
+  `get_rwa_issuers`, `get_rwa_issuer`), Hyperliquid gained `hyperliquid_get_outcome_deployer_limits`,
+  and Helius gained the Parsed Events API (`helius_get_parsed_events_transactions`,
+  `helius_get_parsed_events_transaction_history`). Eight Alchemy NFT tools that Alchemy retires
+  on 2026-09-30 were removed ahead of the sunset. The catalog is now 534 callable tools across
+  nine categories and 12 providers. `hive portfolio balance`, `hive portfolio history`, and
+  `hive network chains` now route through Alchemy and CoinGecko.
+</Update>
+
 <Update label="August 2026" description="MCP, CLI, and skills only">
   Hive is now an agent-focused product. The REST API remains as internal plumbing for the
   CLI and dashboard, but it is no longer a documented product surface, and the SDK guides

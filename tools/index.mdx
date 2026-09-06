@@ -1,16 +1,16 @@
 ---
 title: "Tools"
-description: "Ten categories covering 607 callable tools, and how your agent finds the right one."
+description: "Nine categories covering 534 callable tools, and how your agent finds the right one."
 ---
 
-Hive exposes 589 provider tools across ten categories, plus 18 Hive-native tools for durable
-monitoring, memory, alerts, and reports. That is 607 callable tools in total.
+Hive exposes 516 provider tools across nine categories, plus 18 Hive-native tools for durable
+monitoring, memory, alerts, and reports. That is 534 callable tools in total.
 
 You will not wire any of them up by hand.
 
 ## How your agent finds a tool
 
-The root endpoint shows eight tools, not 607. Your agent narrows from there:
+The root endpoint shows eight tools, not 534. Your agent narrows from there:
 
 ```
 search_tools("check if this token is a honeypot")
@@ -24,16 +24,15 @@ search_tools("check if this token is a honeypot")
 
 | Category | Tools | Covers |
 |---|---|---|
-| [Market Data & Price](/tools/market-data) | 143 | Spot, OHLC, market caps, volume, derivatives, exchanges |
-| [On-Chain DEX & Pool Analytics](/tools/dex-analytics) | 66 | Pool, pair, liquidity, and trade flow data across major EVM and Solana markets |
-| [Portfolio & Wallet](/tools/portfolio) | 104 | Wallet balances, history, PnL, approvals across EVM and Solana |
-| [Token & Contract Data](/tools/token-contract) | 48 | Token metadata, holders, top traders, analytics |
+| [Market Data & Price](/tools/market-data) | 147 | Spot, OHLC, market caps, volume, derivatives, exchanges |
+| [On-Chain DEX & Pool Analytics](/tools/dex-analytics) | 46 | Pool, pair, liquidity, and trade flow data across major EVM and Solana markets |
+| [Portfolio & Wallet](/tools/portfolio) | 96 | Wallet balances, history, PnL, approvals across EVM and Solana |
+| [Token & Contract Data](/tools/token-contract) | 40 | Token metadata, holders, top traders, analytics |
 | [DeFi Protocol Analytics](/tools/defi) | 25 | TVL, yields, fees, chain breakdowns, stablecoins |
-| [NFT Analytics](/tools/nft) | 67 | Collections, floors, sales, holders, traits, compressed NFTs |
+| [NFT Analytics](/tools/nft) | 59 | Collections, floors, sales, holders, traits, compressed NFTs |
 | [Security & Risk Analysis](/tools/security) | 51 | Token, NFT, dApp, wallet scans; honeypot, rug-pull, simulation, LP locks |
-| [Network & Infrastructure](/tools/network) | 40 | Network lists, gas, block numbers, exchange status, and Solana infrastructure |
-| [Search & Discovery](/tools/search) | 24 | Cross-provider search across coins, tokens, exchanges, categories, events |
-| [Prediction Markets](/tools/prediction-markets) | 21 | Polymarket events, traders, market prices, settlement history |
+| [Network & Infrastructure](/tools/network) | 33 | Network lists, gas, block numbers, exchange status, and Solana infrastructure |
+| [Search & Discovery](/tools/search) | 19 | Cross-provider search across coins, tokens, exchanges, categories, events |
 
 ## Narrowing to one category
 
@@ -45,7 +44,7 @@ https://mcp.hiveintelligence.xyz/hive_market_data/mcp
 ```
 
 This is worth doing when an agent only ever works in one domain. A wallet-analysis agent does
-not need prediction market tools competing for its attention.
+not need NFT tools competing for its attention.
 
 ## The live catalog is the authority
 

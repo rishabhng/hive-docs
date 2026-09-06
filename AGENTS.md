@@ -22,12 +22,12 @@ for plan pricing. Do not invent counts and do not round them.
 
 Current values at the time of writing:
 
-- Endpoint `https://mcp.hiveintelligence.xyz/mcp`, plus 10 category endpoints
-- 589 provider tools + 18 Hive-native = 607 callable
-- 13 providers, 11 documented clients, 17 skill packs
+- Endpoint `https://mcp.hiveintelligence.xyz/mcp`, plus 9 category endpoints
+- 516 provider tools + 18 Hive-native = 534 callable
+- 12 providers, 11 documented clients, 16 skill packs
 - Hero tools: `get_token_price`, `check_token_safety`, `get_wallet_portfolio`
 - Anonymous lane: 25 material calls per IP per day, resetting 00:00 UTC
-- CLI `hive-intelligence@1.4.0`
+- CLI `hive-intelligence@1.6.0`
 
 When the product changes, update these docs and this list together.
 

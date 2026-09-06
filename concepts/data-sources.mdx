@@ -1,9 +1,9 @@
 ---
 title: "Data sources"
-description: "The 13 data sources behind Hive, and what each one contributes."
+description: "The 12 data sources behind Hive, and what each one contributes."
 ---
 
-Hive normalizes 13 data sources behind one interface. Ten are external providers. The other
+Hive normalizes 12 data sources behind one interface. Nine are external providers. The other
 three are Hive's own: an archive of historical derivatives data, a normalized RWA perpetuals
 feed, and an allowlisted fetch for public APIs that have no dedicated integration.
 
@@ -15,13 +15,12 @@ used.
 | Provider | Contributes |
 |---|---|
 | [Alchemy](https://www.alchemy.com) | EVM wallet, token, NFT, transfer, simulation, gas, and network RPC data |
-| [CoinGecko](https://www.coingecko.com) | Market data, OHLC, trending coins, exchange data, news |
+| [CoinGecko](https://www.coingecko.com) | Market data, OHLC, trending coins, exchange data, tokenized RWA markets, news |
 | [DeFiLlama](https://defillama.com) | TVL, yields, fees, stablecoins, chain analytics |
 | [GoPlus](https://gopluslabs.io) | Token, NFT, dApp, wallet security and risk analysis |
-| [Codex](https://www.codex.io) | DEX analytics, prediction markets, on-chain trade flow |
 | [CCXT](https://github.com/ccxt/ccxt) | Centralized exchange spot, derivatives, funding rates |
-| [Helius](https://www.helius.dev) | Solana RPC, Digital Asset Standard, priority fees, parsed transactions |
-| [Hyperliquid](https://hyperliquid.xyz) | Perpetual DEX volume, funding, candles, open-interest caps, and builder DEX discovery |
+| [Helius](https://www.helius.dev) | Solana RPC, Digital Asset Standard, priority fees, parsed transactions and Parsed Events |
+| [Hyperliquid](https://hyperliquid.xyz) | Perpetual DEX volume, funding, candles, open-interest caps, builder DEX discovery, and HIP-4 outcome markets |
 | [Open Data Fetch](https://www.hiveintelligence.xyz) | Allowlisted, size-capped access to long-tail public crypto APIs when no typed tool covers the source |
 | [Tenderly](https://tenderly.co) | EVM transaction simulation, gas estimation, calldata decoding |
 | [Moralis](https://moralis.com) | Wallet, token, NFT analytics across EVM and Solana |
@@ -31,7 +30,7 @@ used.
 ## How routing works
 
 You do not choose a provider. Ask for a price and Hive decides whether that means CoinGecko,
-Codex, or CCXT based on the asset, the venue, and which sources are healthy right now.
+Alchemy, or CCXT based on the asset, the venue, and which sources are healthy right now.
 
 The `provider` field in every receipt tells you which one answered, so the same question can
 legitimately cite different sources on different days.
