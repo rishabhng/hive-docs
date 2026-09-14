@@ -35,12 +35,14 @@ your monthly credits.
 
 | Error | Cause | Fix |
 |---|---|---|
-| Unknown tool | The name does not exist in the deployed catalog | Run `search_tools` again; the catalog may have changed |
-| Invalid arguments | Wrong shape, type, or a missing required field | Call `get_api_endpoint_schema` and rebuild the call |
+| Unknown tool (`TOOL_NOT_FOUND`, REST 404) | The name does not exist in the deployed catalog | Run `search_tools` with your task and retry with the exact name; the receipt's `next_action` says the same |
+| Retired tool (`TOOL_RETIRED`, REST 410) | The name was removed in a release (for example the Codex-era tools retired on 2026-09-06) | Call the replacement named in the message with its own argument names. Never retry the retired name; it will not come back |
+| Invalid arguments (`VALIDATION_ERROR`, REST 422) | Wrong shape, type, or a missing required field | Call `get_api_endpoint_schema` and rebuild the call. The hero tools also accept common aliases such as `token_address`, `contract_address`, `wallet`, and `network` |
 | Unsupported chain | The tool does not cover that chain | Check the category page for coverage |
 
 Most argument errors come from an agent guessing parameter names. Reading the schema first
-avoids nearly all of them.
+avoids nearly all of them. All three carry `runtime_status: "invalid_input"` in the receipt:
+the call is fixable by the caller, and retrying it unchanged will fail again.
 
 ## Provider and runtime
 
