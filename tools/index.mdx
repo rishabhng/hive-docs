@@ -1,16 +1,16 @@
 ---
 title: "Tools"
-description: "Nine categories covering 534 callable tools, and how your agent finds the right one."
+description: "Ten categories covering 546 callable tools, and how your agent finds the right one."
 ---
 
-Hive exposes 516 provider tools across nine categories, plus 18 Hive-native tools for durable
-monitoring, memory, alerts, and reports. That is 534 callable tools in total.
+Hive exposes 527 provider tools across ten categories, plus 19 Hive-native tools for durable
+monitoring, memory, alerts, reports, and feedback. That is 546 callable tools in total.
 
 You will not wire any of them up by hand.
 
 ## How your agent finds a tool
 
-The root endpoint shows eight tools, not 534. Your agent narrows from there:
+The root endpoint shows eight tools, not 546. Your agent narrows from there:
 
 ```
 search_tools("check if this token is a honeypot")
@@ -24,15 +24,16 @@ search_tools("check if this token is a honeypot")
 
 | Category | Tools | Covers |
 |---|---|---|
-| [Market Data & Price](/tools/market-data) | 147 | Spot, OHLC, market caps, volume, derivatives, exchanges |
+| [Market Data & Price](/tools/market-data) | 150 | Spot, OHLC, market caps, volume, derivatives, exchanges |
 | [On-Chain DEX & Pool Analytics](/tools/dex-analytics) | 46 | Pool, pair, liquidity, and trade flow data across major EVM and Solana markets |
 | [Portfolio & Wallet](/tools/portfolio) | 96 | Wallet balances, history, PnL, approvals across EVM and Solana |
 | [Token & Contract Data](/tools/token-contract) | 40 | Token metadata, holders, top traders, analytics |
-| [DeFi Protocol Analytics](/tools/defi) | 25 | TVL, yields, fees, chain breakdowns, stablecoins |
+| [DeFi Protocol Analytics](/tools/defi) | 26 | TVL, yields, fees, chain breakdowns, stablecoins |
 | [NFT Analytics](/tools/nft) | 59 | Collections, floors, sales, holders, traits, compressed NFTs |
 | [Security & Risk Analysis](/tools/security) | 51 | Token, NFT, dApp, wallet scans; honeypot, rug-pull, simulation, LP locks |
 | [Network & Infrastructure](/tools/network) | 33 | Network lists, gas, block numbers, exchange status, and Solana infrastructure |
 | [Search & Discovery](/tools/search) | 19 | Cross-provider search across coins, tokens, exchanges, categories, events |
+| [Prediction Markets](/tools/prediction-markets) | 7 | Polymarket market and event search, market-implied odds, order books, odds history, wallet positions |
 
 ## Narrowing to one category
 

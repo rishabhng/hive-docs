@@ -19,13 +19,19 @@ Tools reached through discovery attach a top-level `_hive` object alongside the 
     "runtime_status": "ok",
     "fetched_at": "2026-08-19T14:22:07Z",
     "cache_status": "miss",
-    "duration_ms": 184
+    "duration_ms": 184,
+    "credit_cost": 1,
+    "credits_used": 1,
+    "credits_remaining": 9774
   }
 }
 ```
 
-`_hive` also carries `receipt_version`, `server_version`, `input_digest`, and
-`result_digest`. The digests are SHA-256 self-checks over the canonical arguments and the
+`_hive` also carries `receipt_version` (always `"1.0"`; the credit fields were added without
+bumping it), `server_version`, `input_digest`, and `result_digest`. `credit_cost`,
+`credits_used` and `credits_remaining` are described under
+[receipts](/concepts/receipts#what-the-call-cost); on an error the object also carries
+`cause`, `next_action` and `doc_url`. The digests are SHA-256 self-checks over the canonical arguments and the
 normalized payload. They let you detect accidental mutation; they are not server signatures.
 
 ## Hero tools
@@ -67,12 +73,16 @@ lands in `meta` rather than `_hive` or `source_receipt`:
     "runtime_status": "ok",
     "source": "live",
     "truncated": false,
+    "credit_cost": 1,
+    "credits_used": 1,
+    "credits_remaining": 9775,
     "quota_remaining": 9775
   }
 }
 ```
 
-`meta.tool` is the tool you called and `meta.provider` is the surface that served it, so a hero
+`quota_remaining` is a deprecated alias of `credits_remaining` kept for one release; read
+the new name. `meta.tool` is the tool you called and `meta.provider` is the surface that served it, so a hero
 tool reads `Hive` here. The upstream provider for that call is in `source_receipt` inside
 `data`, not in `meta`.
 
@@ -129,5 +139,8 @@ the context your agent needs for the actual task.
 
 ## Errors
 
-Failures return an error object naming the cause and the next action. See
-[errors](/reference/errors).
+Failures return the same four legs on every surface: `code`, `message`, `cause`,
+`next_action`, plus `retryable`, `retry_after` when a wait is known, and `doc_url`, an anchor
+on the [errors page](/reference/errors). REST keeps `type`, `param` and `request_id`
+alongside; JSON-RPC cap errors carry the fields under `error.data`; the CLI keeps
+`suggestion` as an alias of `next_action` for one release.

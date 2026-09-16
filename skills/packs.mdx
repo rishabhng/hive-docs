@@ -1,6 +1,6 @@
 ---
 title: "Skill packs"
-description: "All 17 Hive agent skill packs, grouped by purpose."
+description: "All 18 Hive agent skill packs, grouped by purpose."
 ---
 
 Install any of these with:
@@ -8,6 +8,12 @@ Install any of these with:
 ```bash
 npx skills add hive-intel/hive-skills --skill <name> --yes
 ```
+
+## Start here
+
+| Pack | What it does |
+|---|---|
+| `hive` | The umbrella pack. Detects whether to use MCP or the `hive` CLI, carries the one setup command, the opt-in routing block, the eight-tool loop, the credit and error tables, and the feedback triggers. It loads the packs below when a question needs them |
 
 ## Setup and integration
 
@@ -39,11 +45,12 @@ npx skills add hive-intel/hive-skills --skill <name> --yes
 | `hive-nft-research` | Collections, ownership, metadata, floor price, sales, rarity, and spam checks |
 | `hive-solana-analysis` | Solana wallets, SPL token accounts, DAS assets, parsed transactions, and priority fees |
 | `hive-network-infrastructure` | Chain state, gas, blocks, receipts, logs, transaction status, and RPC diagnostics |
+| `hive-prediction-markets` | Polymarket events, markets, market-implied odds, order books, odds history, and wallet positions |
 
 ## Picking one
 
-If you are unsure, install `hive-query`. It routes a plain question to the right toolset,
-which covers most of what the specialised packs do without you choosing upfront.
+If you are unsure, install `hive`. It is the umbrella pack: it handles setup, picks the
+transport, and loads `hive-query` when a question needs the full toolset walk.
 
 Install a specialised pack when your agent does the same kind of investigation repeatedly and
 you want the full route every time. `hive-token-diligence` and `hive-wallet-investigation` are

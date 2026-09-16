@@ -1,0 +1,65 @@
+---
+title: "Prediction Markets"
+description: "Polymarket market and event search, market-implied odds, order books, odds history, wallet positions. 7 tools on a dedicated Hive endpoint."
+---
+
+Market-implied odds from Polymarket: find markets and events, read the live order book and the
+odds history behind a price, and inspect what a trader holds and trades.
+
+<Note>
+  A prediction-market price is what the market will pay for an outcome, not the probability
+  that the outcome is true. Quote it as implied odds, with the liquidity and spread behind it.
+</Note>
+
+## Endpoint
+
+Connect here to expose only this category to your agent:
+
+```
+https://mcp.hiveintelligence.xyz/hive_prediction_markets/mcp
+```
+
+7 tools live behind it. The root endpoint reaches the same tools through
+[discovery](/concepts/how-it-works), so use this narrower endpoint when an agent works only
+in this domain.
+
+## What is covered
+
+Polymarket's Gamma, CLOB, and Data APIs are public, so these tools work on the keyless lane
+with no account.
+
+| Tool | Answers |
+|---|---|
+| `polymarket_search_markets` | Which markets exist for a topic, with their slugs and outcome token ids |
+| `polymarket_get_events` | The candidate markets inside one event, such as an election |
+| `polymarket_get_market` | One market by slug or condition id, with its last implied price and liquidity |
+| `polymarket_get_orderbook` | The live book for one outcome token, with spread and depth |
+| `polymarket_get_price_history` | Bounded odds history for one outcome token over a window |
+| `polymarket_get_wallet_positions` | What one wallet holds across markets |
+| `polymarket_get_wallet_activity` | What one wallet recently bought and sold |
+
+Hyperliquid's HIP-4 onchain outcome markets stay in
+[Market Data & Price](/tools/market-data) as `hyperliquid_get_outcome_meta` and
+`hyperliquid_get_settled_outcome`.
+
+Kalshi is not covered. Its developer agreement requires prior written authorization before
+its API data is shared with anyone else, and Hive does not hold that authorization.
+
+## Finding a specific tool
+
+Rather than listing every argument here, ask Hive:
+
+```
+search_tools("odds on the next fed decision")
+```
+
+The [`prediction_markets` task toolset](/concepts/workflows) carries the three routes an agent
+should follow: an odds snapshot, an odds trend, and a trader's flow.
+
+## From the CLI
+
+```bash
+hive tools search polymarket
+hive tools info polymarket_get_orderbook
+hive tools call polymarket_search_markets --query "fed rate" --limit 5
+```

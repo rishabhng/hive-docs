@@ -10,13 +10,22 @@ cap, so a runaway agent produces an error, not an invoice.
 
 Without an account you get 25 material calls per IP per day, resetting at 00:00 UTC.
 
-Discovery calls do not count. Your agent can list tools and read schemas as often as it needs
-while working out what to call. Only calls that fetch real data draw down the allowance.
+Discovery calls do not count, and neither does `report_feedback`. Your agent can list tools
+and read schemas as often as it needs while working out what to call. Every other call is one
+allowance call, consumed when the request is accepted: a call rejected for bad arguments still
+spends one, so read the schema first. `GET /api/v1/quota` and `hive doctor` show what is left
+without spending any.
 
 ## Credits
 
 Signed-in accounts draw from a monthly credit wallet instead. Credits are tracked on your
 account, not per key, so creating extra keys does not create extra allowance.
+
+Every tool costs one credit; discovery tools, category listings and `report_feedback` cost
+none. On a keyed lane the credit is debited only after your arguments validate and the
+provider is reachable, so a validation error costs nothing and a call that reaches a provider
+costs one even when that provider fails. Each receipt says what happened in `credit_cost`,
+`credits_used` and `credits_remaining` (see [receipts](/concepts/receipts#what-the-call-cost)).
 
 | Plan | Monthly credits | Rate limit | Active keys |
 |---|---|---|---|

@@ -3,6 +3,35 @@ title: "Changelog"
 description: "Notable changes to the Hive MCP server, CLI, and skills."
 ---
 
+<Update label="September 2026" description="1.7.0: prediction markets, market signals, one umbrella skill">
+  Prediction markets return as a first-party category on Polymarket, not a resold feed: seven
+  keyless tools for market and event search, market-implied odds, CLOB order books, bounded
+  odds history, and a wallet's positions and activity, plus the `prediction_markets` task
+  toolset, the restored `hive-prediction-markets` skill pack, and the `prediction_market`
+  monitor kind. Kalshi is not covered, because its developer agreement requires prior written
+  authorization before its API data is shared with anyone else.
+
+  Four market-signals tools landed: `signals_get_fear_greed` (Crypto Fear and Greed, current
+  plus daily history), `signals_get_technical_indicators` (RSI, MACD, Bollinger, EMA and SMA
+  that Hive computes from CoinGecko candles and reports the candle interval for),
+  `signals_get_onchain_metrics` (daily Bitcoin hash rate, active addresses, transaction count
+  and price), and `defillama_get_hacks`.
+
+  Every receipt now says what the call cost: `credit_cost`, `credits_used`, and
+  `credits_remaining`, with a `doc_url` on every error. `report_feedback` is a free write that
+  works on the keyless lane, so an agent can report a gap without an account.
+  `GET /api/v1/quota` reads today's keyless allowance without spending one.
+
+  The CLI gained generated `--<param>` flags on `hive tools call`, a parameter table in
+  `hive tools info`, `hive routing install|decline|remove` for the AGENTS.md routing block,
+  `hive feedback`, the `hive archive` namespace, and exit code 6 with no retry on every
+  allowance or quota code.
+
+  Skills are now led by one umbrella pack, `hive`, which picks the transport and loads the
+  rest. Eighteen packs ship. The catalog is 546 callable tools across ten categories and 15
+  providers.
+</Update>
+
 <Update label="September 2026" description="1.6.0: Codex.io removed, vendor refresh">
   The Codex.io provider is gone, and with it the Prediction Markets category, its category
   endpoint, the `hive-prediction-markets` skill pack, and the `prediction_market` monitor kind.

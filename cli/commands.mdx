@@ -28,6 +28,7 @@ hive market price --ids bitcoin --vs usd
 | `hive nft` | `trending`, `collection`, `markets`, `search` |
 | `hive network` | `chains`, `block-number`, `resolve` |
 | `hive search` | `tokens`, `pools` |
+| `hive archive` | `coverage`, `funding`, `oi`, `basis`, `long-short`, `liquidations` |
 
 Run `hive <domain> --help` to see the flags each subcommand takes. Two things worth knowing:
 
@@ -43,13 +44,20 @@ Run `hive <domain> --help` to see the flags each subcommand takes. Two things wo
 | `hive init` | Interactive per-client MCP setup |
 | `hive init --all --browser` | Configure every detected client and install the skill packs, with browser sign-in |
 | `hive setup [client]` | Set up one client, for example `hive setup cursor` |
-| `hive doctor` | Check API key, endpoint reachability, tool catalog, and updates |
+| `hive doctor` | Check API key, endpoint reachability, tool catalog, updates, and today's keyless allowance |
 | `hive upgrade` | Update the CLI |
-| `hive uninstall` | Remove Hive MCP entries and delete copied skill packs |
+| `hive uninstall` | Remove Hive MCP entries, delete copied skill packs, and remove any routing block this CLI wrote |
+| `hive routing install` | Append the Hive routing block to this project's AGENTS.md, or CLAUDE.md when there is no AGENTS.md. `--file` picks one, `--create` makes it, `--dry-run` previews |
+| `hive routing decline` | Record that this project does not want the routing block, so nothing asks again |
+| `hive routing remove` | Remove the block and restore the file's original bytes |
 
-`--all` installs all 16 skill packs into your clients' skills directories. Pass `--skip-skills`
-to configure the clients without them. Both `init` and `uninstall` accept `--dry-run` if you
-want to see what would change first.
+`--all` installs all 18 skill packs into your clients' skills directories. Pass `--skip-skills`
+to configure the clients without them, and `--skip-verify` to keep the whole command
+non-interactive, which is what an agent should run. Both `init` and `uninstall` accept
+`--dry-run` if you want to see what would change first.
+
+`hive init` never reads or writes AGENTS.md or CLAUDE.md. The routing block is written only by
+`hive routing install`, and `HIVE_ROUTING=never` disables that on a machine.
 
 ## Tools
 
@@ -59,8 +67,9 @@ Discovery and execution live under `hive tools`:
 |---|---|
 | `hive tools list` | List registered tools. Accepts `--category`, `--provider`, `--limit`, `--offset` |
 | `hive tools search <query>` | Filter tools whose name, title, or description contains your text |
-| `hive tools info <name>` | Show a tool's schema and description |
-| `hive tools call <name> --args '<json>'` | Execute a tool. Arguments can also be piped as JSON on stdin |
+| `hive tools info <name>` | Show a tool's parameter table (name, type, required, enum values, default), response schema, and description |
+| `hive tools call <name> --<param> <value>` | Execute a tool with generated flags typed from its schema, in kebab-case or snake_case |
+| `hive tools call <name> --args '<json>'` | The same call with JSON instead. Flags win over `--args`, and JSON can be piped on stdin |
 | `hive tools refresh` | Force-refresh the cached tool catalog |
 
 <Note>
@@ -121,6 +130,7 @@ how that client accepts remote servers:
 | `hive` | With no subcommand, starts the stdio MCP server |
 | `hive serve` | Run Hive as a local stdio MCP server. `--http` and `--port <number>` run the HTTP transport instead |
 | `hive usage` | Show your current usage against your plan limits |
+| `hive feedback "<message>"` | Send one line of product feedback, up to 1,000 characters. `--tool` names the tool and `--receipt` ties it to a receipt, defaulting to your last call's |
 | `hive status` | Version, active profile, masked key, and endpoint reachability |
 | `hive open [target]` | Open `dashboard`, `docs`, `status`, or `github` in a browser |
 | `hive watch <domain> <command>` | Re-run a domain command on an interval. `--interval <seconds>` defaults to 30 |

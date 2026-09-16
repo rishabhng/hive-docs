@@ -84,6 +84,7 @@
           "tools/security",
           "tools/network",
           "tools/search",
+          "tools/prediction-markets",
           "tools/live-catalog"
         ]
       },
