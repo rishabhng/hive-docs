@@ -71,180 +71,270 @@ Every code Hive emits, on any transport, with the anchor its `doc_url` points at
 
 No alert with that id belongs to this account. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** List alerts with `hive_list_alerts` and use an id from that account.
+
 ### ANON_AUTH_REQUIRED
 
-This tool is not on the keyless lane; add a key or sign in. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
+This tool is not on the keyless lane; add a key or sign in. Transports: mcp, rest, cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Sign in or add an API key; every read-only tool still works keyless.
 
 ### ANON_GLOBAL_CAP_EXCEEDED
 
 Hive's shared keyless allowance for today is spent; a key is not subject to it. Transports: mcp, rest, cli. Retryable: the same request can succeed later without a change.
 
+**Do next:** Add an API key; the shared keyless pool does not apply to keyed callers.
+
 ### ANON_QUOTA_EXCEEDED
 
 The keyless daily allowance for this IP is spent; resets 00:00 UTC. Transports: mcp, rest, cli. Retryable: the same request can succeed later without a change.
+
+**Do next:** Wait for the 00:00 UTC reset, or add an API key to leave the keyless lane.
 
 ### ANON_QUOTA_UNAVAILABLE
 
 The keyless limiter is unreachable; retry in a few seconds or use a key. Transports: mcp, rest. Retryable: the same request can succeed later without a change.
 
+**Do next:** Retry in a few seconds, or add an API key to skip the keyless limiter.
+
 ### API_ERROR
 
 The server answered with an error the CLI does not map further. Transports: cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Read the message; it is the server's own wording. Retry only if it says the failure is transient.
 
 ### AUTH_NOT_CONFIGURED
 
 This server has no auth backend configured; keyless discovery still works. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Use the hosted endpoint, or set the auth backend env vars on this server.
+
 ### AUTH_REQUIRED
 
 The call needs an API key or an OAuth session. Transports: rest, cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Send an API key as `Authorization: Bearer <key>`, or sign in. Read-only tools work without one.
 
 ### AUTH_SERVICE_UNAVAILABLE
 
 The key service is unreachable; retry shortly. Transports: mcp, rest. Retryable: the same request can succeed later without a change.
 
+**Do next:** Retry in a few seconds; the key was not rejected.
+
 ### CATALOG_PAGINATION_ERROR
 
 The tools catalog cursor is invalid; restart from the first page. Transports: rest. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Restart from the first page; paginate with `?limit=250&cursor=<last tool name>`.
 
 ### ENDPOINT_NOT_FOUND
 
 No REST route at that path. Transports: rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Check the path against `GET /api/openapi.json`.
+
 ### FEEDBACK_RATE_LIMITED
 
 Feedback is limited to 10 messages per principal per UTC day. Transports: mcp, rest, cli. Retryable: the same request can succeed later without a change.
+
+**Do next:** Stop sending feedback until the reset time in the message.
 
 ### GENERAL_ERROR
 
 The CLI hit an unclassified error. Transports: cli. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Rerun with `--verbose` to see what the CLI hit.
+
 ### IDEMPOTENCY_KEY_REUSED
 
 That idempotency_key was already used with different arguments. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Use a new key, or resend the original arguments unchanged.
 
 ### INTERNAL_ERROR
 
 Hive failed unexpectedly; the request id identifies the log line. Transports: mcp, rest, cli. Retryable: the same request can succeed later without a change.
 
+**Do next:** Retry once. If it repeats, send the request id from the receipt with `report_feedback`.
+
 ### INVALID_API_KEY
 
 The API key was rejected; check it in the dashboard. Transports: mcp, rest, cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Copy the key again from the dashboard; keys start with `hive_live_`.
 
 ### INVALID_ARGS
 
 The CLI arguments are invalid. Transports: cli. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Check `hive <command> --help`; `hive tools info <name>` prints the parameter table.
+
 ### INVALID_IDEMPOTENCY_KEY
 
 idempotency_key must be 1 to 128 characters of letters, digits, _ - : . Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Send 1 to 128 characters of letters, digits, or _ - : . as the key.
 
 ### INVALID_OAUTH_TOKEN
 
 The OAuth token was rejected; sign in again. Transports: mcp. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Sign in again in the client; the token expired or was revoked.
+
 ### INVALID_REQUEST
 
 The request body is malformed. Transports: rest. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Send a JSON object body with `content-type: application/json`.
 
 ### MEMORY_FACT_NOT_FOUND
 
 No memory fact with that id belongs to this account. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** List facts with `hive_list_memory_facts` and use an id from that account.
+
 ### MISSING_PARAM
 
 A required argument is missing. Transports: rest. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Add the argument named in the message; `get_api_endpoint_schema` lists the required set.
 
 ### MONITOR_CREDIT_EXHAUSTED
 
 Scheduled monitors paused: the account's credits are exhausted. Transports: mcp, rest. Retryable: the same request can succeed later without a change.
 
+**Do next:** Top up in the dashboard; paused monitors resume on the next cycle.
+
 ### MONITOR_CREDIT_UNAVAILABLE
 
 The monitor billing check is unavailable; runs retry next cycle. Transports: mcp, rest. Retryable: the same request can succeed later without a change.
+
+**Do next:** Nothing to do; the next scheduled run retries the billing check.
 
 ### MONITOR_NOT_FOUND
 
 No monitor with that id belongs to this account. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** List monitors with `hive_list_monitors` and use an id from that account.
+
 ### NO_WALLET
 
 The account has no credit wallet; initialize billing in the dashboard. Transports: mcp, rest, cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Open the dashboard billing page once to initialize the credit wallet.
 
 ### PAYLOAD_TOO_LARGE
 
 The request body exceeds the size limit. Transports: rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Split the request, or bound it with `limit` instead of sending the whole payload.
+
 ### PROVIDER_UNAVAILABLE
 
 The provider is not configured or is down; the receipt says which. Transports: mcp, rest, cli. Retryable: the same request can succeed later without a change.
+
+**Do next:** Try the route's fallback tool once, then report the gap with `report_feedback`.
 
 ### QUOTA_EXCEEDED
 
 The account's credit wallet is exhausted for the period. Transports: mcp, rest, cli. Retryable: the same request can succeed later without a change.
 
+**Do next:** Top up or upgrade in the dashboard; the balance resets at the start of the next period.
+
 ### QUOTA_SERVICE_UNAVAILABLE
 
 The billing service could not debit; retry shortly. Transports: mcp, rest. Retryable: the same request can succeed later without a change.
+
+**Do next:** Retry in a few seconds. Nothing was debited.
 
 ### RATE_LIMITED
 
 Too many requests per minute; back off and retry. Transports: mcp, rest, cli. Retryable: the same request can succeed later without a change.
 
+**Do next:** Wait the seconds in `retry_after`, then send the request once more.
+
 ### SECRET_ALREADY_ISSUED
 
 The signing secret was already issued for this subject; rotate it instead. Transports: rest. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Rotate the existing secret instead of issuing a second one.
 
 ### SHUTTING_DOWN
 
 The server is draining; retry against the next revision. Transports: rest. Retryable: the same request can succeed later without a change.
 
+**Do next:** Retry; the next revision is already serving.
+
 ### STATE_BACKEND_UNAVAILABLE
 
 Hive's state store is unreachable; retry shortly. Transports: mcp, rest. Retryable: the same request can succeed later without a change.
+
+**Do next:** Retry in a few seconds; no state was changed.
 
 ### STATE_SUBJECT_ARCHIVE_FORBIDDEN
 
 This credential may not archive that subject. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Use the credential that owns the subject.
+
 ### STATE_SUBJECT_ARCHIVED
 
 The subject this call is scoped to was archived. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Use a live subject; archived subjects are readable but not writable.
 
 ### STATE_SUBJECT_NOT_FOUND
 
 The subject this call is scoped to does not exist. Transports: mcp, rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Create the subject first, or call with a subject id this credential owns.
+
 ### TIMEOUT
 
 The request exceeded the CLI timeout. Transports: cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Raise `--timeout`, or bound the call with `limit` so there is less to fetch.
 
 ### TOOL_ERROR
 
 The provider returned an error the receipt classifies; read runtime_status. Transports: mcp, rest, cli. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Read `runtime_status` in the receipt; retry only when it says `rate_limited` or `degraded`.
+
 ### TOOL_NOT_FOUND
 
 No tool with that name; search_tools finds the right one. Transports: mcp, rest, cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Call `search_tools` with the intent, then use the exact name it returns.
 
 ### TOOL_REQUIRED
 
 The request body is missing the tool field. Transports: rest. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Put the tool name in the `tool` field of the request body.
+
 ### TOOL_RETIRED
 
 The tool was retired; the message names the replacement call. Transports: mcp, rest, cli. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Call the replacement named in the message; the old name will not come back.
 
 ### UNAUTHORIZED
 
 The credential was rejected: revoked, expired, or malformed. Transports: rest, cli. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Check the key in the dashboard, then send the current one; rotate it if it was revoked.
+
 ### VALIDATION_ERROR
 
 Arguments failed validation; the message names the field and accepted values. Transports: mcp, rest, cli. Not retryable: change the request (or the credential) before calling again.
 
+**Do next:** Fix the field named in the message; `get_api_endpoint_schema` gives its type and accepted values.
+
 ### VERIFICATION_FAILED
 
 The task result failed validate_task_result; the message names the failing check. Transports: mcp. Not retryable: change the request (or the credential) before calling again.
+
+**Do next:** Fix the check named in the message, then call `validate_task_result` again.
 
 {/* error-codes:end */}
