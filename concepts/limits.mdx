@@ -12,9 +12,9 @@ Without an account you get 25 material calls per IP per day, resetting at 00:00 
 
 Discovery calls do not count, and neither does `report_feedback`. Your agent can list tools
 and read schemas as often as it needs while working out what to call. Every other call is one
-allowance call, consumed when the request is accepted: a call rejected for bad arguments still
-spends one, so read the schema first. `GET /api/v1/quota` and `hive doctor` show what is left
-without spending any.
+allowance call, taken when the request is accepted and given back if the call fails, bad
+arguments included, so only calls that succeed count toward the 25. `GET /api/v1/quota` and
+`hive doctor` show what is left without spending any.
 
 ## Credits
 
@@ -23,9 +23,11 @@ account, not per key, so creating extra keys does not create extra allowance.
 
 Every tool costs one credit; discovery tools, category listings and `report_feedback` cost
 none. On a keyed lane the credit is debited only after your arguments validate and the
-provider is reachable, so a validation error costs nothing and a call that reaches a provider
-costs one even when that provider fails. Each receipt says what happened in `credit_cost`,
-`credits_used` and `credits_remaining` (see [receipts](/concepts/receipts#what-the-call-cost)).
+provider is reachable, so a validation error costs nothing. If the call then fails, the credit
+is refunded and the receipt carries a warning saying so, which means only a call that succeeds
+costs a credit. A scheduled monitor run is refunded the same way when it errors or every tool
+call in it fails. Each receipt says what happened in `credit_cost`, `credits_used` and
+`credits_remaining` (see [receipts](/concepts/receipts#what-the-call-cost)).
 
 | Plan | Monthly credits | Rate limit | Active keys |
 |---|---|---|---|

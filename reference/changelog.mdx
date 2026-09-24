@@ -3,6 +3,19 @@ title: "Changelog"
 description: "Notable changes to the Hive MCP server, CLI, and skills."
 ---
 
+<Update label="September 2026" description="1.9.0: failed calls are refunded">
+  A call that fails no longer costs anything. On a keyed lane the credit a failed call used is
+  refunded: the receipt reads `credits_used: 0`, `credits_remaining` shows the restored
+  balance, and `warnings` says the credit was refunded. On the keyless lane a failed call gives
+  its daily call back, including one rejected for bad arguments. A scheduled monitor run is
+  refunded when it errors or when every tool call in it fails.
+
+  Hive Archive responses now date each dataset from its own start. Funding settlements go back
+  to November 2023; basis starts in March 2025, open interest and liquidations in April 2025,
+  and the long/short ratio in March 2026. Earlier copy said every series went back to November
+  2023.
+</Update>
+
 <Update label="September 2026" description="1.8.0: every vendor tool tested from production">
   Every vendor tool was run from production, and the failures that were Hive's own are fixed.
   `alchemy_simulate_execution` sends its arguments in the order Alchemy expects,
@@ -77,9 +90,10 @@ description: "Notable changes to the Hive MCP server, CLI, and skills."
 </Update>
 
 <Update label="August 2026" description="Hive Archive provider">
-  Added cross-venue derivatives history covering 33 CEX and DEX venues going back to
-  November 2023: settled funding rates, open interest, basis, long/short ratio, and
-  liquidations.
+  Added cross-venue derivatives history from 33 CEX and DEX venues: settled funding rates
+  back to November 2023, plus basis (from March 2025), open interest and liquidations (from
+  April 2025), and long/short ratio (from March 2026). This entry first said every series
+  went back to November 2023; only funding does.
 </Update>
 
 <Update label="August 2026" description="CLI 1.4.0">
