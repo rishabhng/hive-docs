@@ -3,7 +3,7 @@ title: "How Hive works"
 description: "Why your agent finds the right tool without you wiring anything."
 ---
 
-Hive exposes 546 callable tools. If a client loaded all of them at once, the tool list alone
+Hive exposes 525 callable tools. If a client loaded all of them at once, the tool list alone
 would crowd out the conversation. So the root endpoint stays small and routes instead.
 
 ## The root endpoint is deliberately small
@@ -61,7 +61,7 @@ already had the answer.
 
 ## Why not load everything at once
 
-Two reasons. A 546 tool list eats context that should hold the actual problem, and it makes
+Two reasons. A 525 tool list eats context that should hold the actual problem, and it makes
 selection harder: the more similar tools an agent sees at once, the more often it picks the
 wrong one. Narrowing by task first produces better calls.
 

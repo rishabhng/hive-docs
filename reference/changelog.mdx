@@ -3,6 +3,28 @@ title: "Changelog"
 description: "Notable changes to the Hive MCP server, CLI, and skills."
 ---
 
+<Update label="September 2026" description="1.8.0: every vendor tool tested from production">
+  Every vendor tool was run from production, and the failures that were Hive's own are fixed.
+  `alchemy_simulate_execution` sends its arguments in the order Alchemy expects,
+  `tenderly_suggest_gas_fee` calls the right gateway method, Tenderly gateway calls retry when
+  they are rate limited, DeFiLlama price charts accept a start and an end together, and
+  `hyperliquid_get_token_details` accepts a spot token name such as `HYPE`.
+
+  Alchemy's Solana DAS and Photon tools fall back to Helius when Alchemy's indexer is
+  unavailable. The response says so: `_hive.source` reads `fallback`, and a `_fallback` block
+  names the provider that answered.
+
+  Errors now carry the provider's own message, so a malformed address or an unsupported input
+  comes back as `invalid_input` rather than looking like an outage.
+
+  Twenty-one tools that fail on every call on Hive's current data plans are retired: five
+  CoinGecko Enterprise tools (supply charts and coin insights), seven DeFiLlama Pro tools
+  (derivatives volumes, categories, oracles, forks, and entities), three Helius wallet-identity
+  tools, two Alchemy bundle simulations, three CCXT current borrow-rate tools, and GoPlus Solana
+  pre-execution. Calling one returns `TOOL_RETIRED` with a working replacement. The catalog is
+  now 525 callable tools across ten categories.
+</Update>
+
 <Update label="September 2026" description="1.7.0: prediction markets, market signals, one umbrella skill">
   Prediction markets return as a first-party category on Polymarket, not a resold feed: seven
   keyless tools for market and event search, market-implied odds, CLOB order books, bounded
